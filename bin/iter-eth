@@ -1,0 +1,83 @@
+#!/bin/sh
+
+display_help() {
+  echo "Usage: $0 --network-folder [network folder]" >&2
+  echo
+  echo "   -n, --network-folder        Network folder to use"
+  echo
+  exit 1
+}
+
+################################
+# Check if parameters options  #
+# are given on the commandline #
+################################
+while :; do
+  case "$1" in
+  -h | --help)
+    display_help # Call your function
+    exit 0
+    ;;
+  -n | --network-folder)
+    network_folder="$2"
+    shift 2
+    ;;
+
+  --) # End of all options
+    shift
+    break
+    ;;
+  -*)
+    echo "Error: Unknown option: $1" >&2
+    display_help
+    exit 1
+    ;;
+  *) # No more options
+    break
+    ;;
+  esac
+done
+
+PRJT_ROOT="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit 1 ; pwd -P | grep -o '^.*/' )"
+
+NETWORK_FOLDER_DEFAULT="${PRJT_ROOT}networks/local"
+NETWORK_FOLDER=$(realpath "${network_folder:-$NETWORK_FOLDER_DEFAULT}")
+
+SC=${PRJT_ROOT}"packages/cast/smart-contract/eth"
+BA_PRO=${PRJT_ROOT}"packages/cast/examples"
+
+
+if ! lerna run --stream --no-prefix --scope @castframework/smart-contract-ethereum init -- -- --network-folder "$NETWORK_FOLDER"
+then
+    echo "💥 Error during init"
+    exit 1
+fi
+
+echo "🛠 Exporting abi to examples"
+
+cd "$PRJT_ROOT" || exit 1
+
+
+if cp -rf "${SC}"/abi/* "${BA_PRO}"/src/blockchainSpecific/eth/abi
+then
+    echo "✅ Abi exported to examples"
+else
+    echo "💥 Error during api export to examples"
+    exit 1
+fi
+
+## Build blockchain abstract
+
+cd "${BA_PRO}" || exit 1
+
+echo "🛠 Rebuilding examples"
+
+if npm run build
+then
+    echo "✅ Built examples"
+else
+    echo "💥 Error examples build"
+    exit 1
+fi
+
+echo "🎊 All done !"

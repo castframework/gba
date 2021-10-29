@@ -1,0 +1,10 @@
+{
+    "reporterEnabled": "mocha-junit-reporter, mocha-sonarqube-reporter, spec",
+    "mochaJunitReporterReporterOptions": {
+        "mochaFile": "../../../reports/junit/ut-blockchain-abstract.xml"
+    },
+    "mochaSonarqubeReporterReporterOptions": {
+        "output": "../../../reports/sonar/ut-blockchain-abstract.xml",
+        "useFullFilePath": true
+    }
+}

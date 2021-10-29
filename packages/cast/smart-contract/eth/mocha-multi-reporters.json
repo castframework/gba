@@ -1,0 +1,13 @@
+{
+    "reporterEnabled": "mocha-junit-reporter, mocha-sonarqube-reporter, eth-gas-reporter",
+    "mochaJunitReporterReporterOptions": {
+        "mochaFile": "../../../../reports/junit/ut-smartcontract-eth.xml"
+    },
+    "mochaSonarqubeReporterReporterOptions": {
+        "output": "../../../../reports/sonar/ut-smartcontract-eth.xml",
+        "useFullFilePath": true
+    },
+    "ethGasReporterReporterOptions": {
+        "showTimeSpent": true
+    }
+}

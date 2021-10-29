@@ -1,0 +1,6 @@
+#!/bin/sh
+
+for packageDir in packages/*/; do
+    jq '. | { devDependencies: .devDependencies }' package.json | jq  --sort-keys -s '.[1] * .[0]' - $packageDir/package.json > $packageDir/package.json.new
+    mv $packageDir/package.json.new $packageDir/package.json
+done

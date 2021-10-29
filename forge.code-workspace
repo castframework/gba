@@ -1,0 +1,215 @@
+{
+  "extensions": {
+    "recommendations": [
+      "googlecloudtools.cloudcode",
+      "msjsdiag.debugger-for-chrome",
+      "jingkaizhao.vscode-redux-devtools",
+      "ms-azuretools.vscode-docker",
+      "redhat.vscode-yaml",
+      "mikestead.dotenv",
+      "dbaeumer.vscode-eslint",
+      "eamodio.gitlens",
+      "eg2.vscode-npm-script",
+      "juanblanco.solidity"
+    ]
+  },
+  "folders": [
+    {
+      "name": "CAST chain-auth",
+      "path": "packages/cast/chain-auth"
+    },
+    {
+      "name": "CAST transaction-manager",
+      "path": "packages/cast/transaction-manager"
+    },
+    {
+      "name": "CAST blockchain-abstract",
+      "path": "packages/cast/blockchain-abstract"
+    },
+    {
+      "name": "CAST blockchain-driver-eth",
+      "path": "packages/cast/blockchain-driver-eth"
+    },
+    {
+      "name": "CAST blockchain-driver-tz",
+      "path": "packages/cast/blockchain-driver-tz"
+    },
+    {
+      "name": "CAST swift-encoder",
+      "path": "packages/cast/swift-encoder"
+    },
+    {
+      "name": "CAST models",
+      "path": "packages/cast/models"
+    },
+    {
+      "name": "CAST oracle-clients",
+      "path": "packages/cast/oracle-clients"
+    },
+    {
+      "name": "CAST oracles",
+      "path": "packages/cast/oracles"
+    },
+    {
+      "name": "smart-contract-eth",
+      "path": "packages/castf/smart-contract/eth"
+    },
+    {
+      "name": "smart-contract-tezos",
+      "path": "packages/castf/smart-contract/tezos"
+    },
+    {
+      "name": "smartpy-cli",
+      "path": "packages/cast/smartpy-cli"
+    },
+    {
+      "name": "charts",
+      "path": "charts"
+    },
+    {
+      "name": "cast-framework",
+      "path": "."
+    },
+  ],
+  "settings": {
+    "conventionalCommits.scopes": [
+      "www",
+      "api",
+      "fro",
+      "fso",
+      "fio",
+      "str",
+      "eth",
+      "tez",
+      "ci",
+      "charts",
+      "images",
+      "tests-fb",
+      "tests-ob",
+      "tests-e2e",
+      "doc",
+      "oracle"
+    ],
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "editor.formatOnSave": true,
+    "editor.formatOnType": false,
+    "editor.rulers": [
+      80
+    ],
+    "editor.tabSize": 2,
+    "files.eol": "\n",
+    "files.exclude": {
+      "packages/cast/smart-contract/eth": true,
+      "packages/cast/smart-contract/tezos": true,
+      "charts": true,
+      "packages": true
+    },
+    "eslint.enable": true,
+    "eslint.format.enable": true,
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "solidity"
+    ],
+    "eslint.workingDirectories": [
+      {
+        "mode": "location"
+      }
+    ],
+    "[javascript]": {
+      "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "git.ignoreLimitWarning": true,
+    "javascript.autoClosingTags": false,
+    "javascript.format.enable": false,
+    "javascript.preferences.importModuleSpecifier": "relative",
+    "javascript.format.insertSpaceAfterCommaDelimiter": false,
+    "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+    "javascript.format.insertSpaceAfterKeywordsInControlFlowStatements": false,
+    "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+    "javascript.format.insertSpaceAfterSemicolonInForStatements": false,
+    "javascript.format.insertSpaceBeforeAndAfterBinaryOperators": false,
+    "javascript.validate.enable": false,
+    "prettier.requireConfig": true,
+    "solidity.compileUsingRemoteVersion": "v0.6.7+commit.b8d736ae",
+    "solidity.enabledAsYouTypeCompilationErrorCheck": true,
+    "solidity.enabledSolium": false,
+    "solidity.formatter": "prettier",
+    "solidity.linter": "solhint",
+    "solidity.solhintRules": {
+      "array-declaration-spaces": "warn",
+      "avoid-call-value": "warn",
+      "avoid-low-level-calls": "warn",
+      "avoid-sha3": "warn",
+      "avoid-suicide": "error",
+      "avoid-throw": "off",
+      "avoid-tx-origin": "warn",
+      "bracket-align": "warn",
+      "check-send-result": "warn",
+      "compiler-version": [
+        "error",
+        "0.6.7"
+      ],
+      "const-name-snakecase": "warn",
+      "constructor-syntax": "warn",
+      "contract-name-camelcase": "warn",
+      "event-name-camelcase": "warn",
+      "expression-indent": "warn",
+      "func-name-mixedcase": "warn",
+      "func-visibility": "warn",
+      "imports-on-top": "warn",
+      "mark-callable-contracts": "warn",
+      "max-states-count": [
+        "warn",
+        15
+      ],
+      "multiple-sends": "warn",
+      "no-complex-fallback": "warn",
+      "no-empty-blocks": "warn",
+      "no-inline-assembly": "warn",
+      "no-mix-tabs-and-spaces": "warn",
+      "no-spaces-before-semicolon": "warn",
+      "no-unused-vars": "warn",
+      "not-rely-on-block-hash": "warn",
+      "not-rely-on-time": "warn",
+      "payable-fallback": "warn",
+      "prettier/prettier": "error",
+      "quotes": [
+        "error",
+        "double"
+      ],
+      "reentrancy": "warn",
+      "space-after-comma": "warn",
+      "state-visibility": "warn",
+      "statement-indent": "warn",
+      "use-forbidden-name": "warn",
+      "var-name-mixedcase": "warn",
+      "visibility-modifier-order": "warn"
+    },
+    "solidity.validationDelay": 1500,
+    "tslint.enable": false,
+    "typescript.format.enable": false,
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "typescript.format.insertSpaceAfterCommaDelimiter": false,
+    "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+    "typescript.format.insertSpaceAfterKeywordsInControlFlowStatements": false,
+    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+    "typescript.format.insertSpaceAfterSemicolonInForStatements": false,
+    "typescript.format.insertSpaceBeforeAndAfterBinaryOperators": false,
+    "typescript.reportStyleChecksAsWarnings": false,
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "workbench.editor.enablePreview": false,
+    "solidity.enableLocalNodeCompiler": false,
+    "python.formatting.autopep8Args": [
+      "--ignore",
+      "E402"
+    ]
+  }
+}

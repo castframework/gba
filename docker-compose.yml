@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  ganache:
+    container_name: ganache
+    image: trufflesuite/ganache-cli:latest
+    ports:
+      - "8545:8545"
+    entrypoint:
+      - node
+      - /app/ganache-core.docker.cli.js
+      - --deterministic
+      - --db=/ganache_data
+      - --mnemonic
+      - 'minimum symptom minute gloom tragic situate silver mechanic salad amused elite beef'
+      - --networkId
+      - '5777'
+      - --hostname
+      - '0.0.0.0'
+      - --debug
+      - --accounts
+      - '100'
+  flextesa:
+    container_name: flextesa
+    image: tqtezos/flextesa:20210602
+    ports:
+      - "20000:20000"
+    command: flobox start

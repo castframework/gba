@@ -1,0 +1,207 @@
+name: Release
+on: workflow_dispatch
+
+jobs:
+  tests:
+    name: Unit test (Node ${{ matrix.node }}, ${{ matrix.architecture }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ '12', '14', '16' ]
+        architecture: [ 'x64' ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+          architecture: ${{ matrix.architecture }}
+          cache: 'npm'
+
+      - name: Install
+        run: |
+          npm install -g npm lerna
+          npm ci
+          ./bin/symlink-bin
+          lerna link
+
+      - name: Build
+        run: |
+          lerna run build
+
+      - name: Test
+        run: |
+          lerna run stats
+
+      - name: Upload code coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./reports/coverage/ut-transaction-manager/cobertura-coverage.xml,./reports/coverage/ut-blockchain-driver-eth/cobertura-coverage.xml,./reports/coverage/ut-blockchain-driver-tz/cobertura-coverage.xml,./reports/coverage/ut-types/cobertura-coverage.xml,./reports/coverage/ut-utils/cobertura-coverage.xml
+          flags: release
+          name: codecov-umbrella
+          verbose: true
+        if: ${{ matrix.node == '16' && matrix.architecture == 'x64' }}
+
+      - name: Authenticate with Registry
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+          npm whoami
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        if: ${{ matrix.node == '16' && matrix.architecture == 'x64' }}
+
+      - name: Setup git
+        run: |
+          git config --global user.email "ci@github.com"
+          git config --global user.name "CI"
+        if: ${{ matrix.node == '16' && matrix.architecture == 'x64' }}
+
+  integration-tests:
+    name: Integration tests (Node ${{ matrix.node }}, ${{ matrix.architecture }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ '16' ]
+        architecture: [ 'x64' ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+          architecture: ${{ matrix.architecture }}
+          cache: 'npm'
+
+      - name: Install
+        run: |
+          npm install -g npm lerna
+          npm ci
+          ./bin/symlink-bin
+          lerna link
+
+      - name: Start blockchains
+        run: |
+          docker-compose up -d
+          docker-compose ps
+
+
+      - name: Setup blockchains
+        run: |
+          ./bin/iter-all
+
+      - name: Instrument code
+        run: |
+          lerna run instrument
+          lerna run build
+          git status
+          git reset --hard
+
+      - name: Integration tests
+        run: |
+          lerna run stats:integration
+
+      - name: Upload code coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./reports/coverage/it-testing/cobertura-coverage.xml
+          flags: release
+          name: codecov-umbrella
+          verbose: true
+
+      - name: Stop blockchains
+        run: docker-compose down
+
+  publish:
+    needs:
+      - tests
+      - integration-tests
+    name: Publish (Node ${{ matrix.node }}, ${{ matrix.architecture }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ '16' ]
+        architecture: [ 'x64' ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+          architecture: ${{ matrix.architecture }}
+          cache: 'npm'
+
+      - name: Install
+        run: |
+          npm install -g npm lerna
+          npm ci
+          ./bin/symlink-bin
+          lerna link
+
+      - name: Build
+        run: |
+          lerna run build
+
+      - name: Authenticate with Registry
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+          npm whoami
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Setup git
+        run: |
+          git config --global user.email "ci@github.com"
+          git config --global user.name "CI"
+
+      - name: Publish packages
+        run: |
+          lerna version --yes --conventional-commits --conventional-graduate --force-publish --create-release github
+          lerna publish from-package --yes --no-verify-access
+        if: ${{ matrix.node == '16'  && matrix.architecture == 'x64' }}
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+
+#  build-docker-image:
+#    name: Build base image
+#    runs-on: ubuntu-latest
+#    needs: build
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#      - name: Set up Docker Buildx
+#        uses: docker/setup-buildx-action@v1
+#      - name: Cache Docker layers
+#        uses: actions/cache@v2
+#        with:
+#          path: /tmp/.buildx-cache
+#          key: ${{ runner.os }}-buildx-${{ github.sha }}
+#          restore-keys: |
+#            ${{ runner.os }}-buildx-
+#      - name: Login to DockerHub
+#        uses: docker/login-action@v1
+#        with:
+#          username: ${{ secrets.DOCKERHUB_USERNAME }}
+#          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#
+#      - name: Build image
+#        uses: docker/build-push-action@v2
+#        with:
+#          push: true
+#          file: images/Dockerfile.oracles
+#          tags: castframework/oracle:${{ github.sha }},castframework/oracle:latest
+#          cache-from: type=local,src=/tmp/.buildx-cache
+#          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+#      - name: Move cache
+#        run: |
+#          rm -rf /tmp/.buildx-cache
+#          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+#

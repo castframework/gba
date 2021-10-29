@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "outDir": "./dist",
+    "preserveConstEnums": true,
+    "removeComments": true,
+    "resolveJsonModule": true,
+    "rootDir": "src",
+    "target": "es6",
+    "types": [],
+    "strictNullChecks": true,
+    "lib": [
+      "es2019",
+      "dom"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "tests",
+    "dist"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.json"
+  ],
+  "references": [
+    {
+      "path": "../transaction-manager"
+    },
+    {
+      "path": "../blockchain-driver-eth"
+    },
+    {
+      "path": "../blockchain-driver-tz"
+    }
+  ]
+}

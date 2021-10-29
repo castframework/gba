@@ -1,0 +1,27 @@
+{
+  "name": "@castframework/smartpy-cli",
+  "version": "1.0.0-alpha.0",
+  "description": "",
+  "main": "originator.js",
+  "scripts": {
+    "preinstall": "python3 --version",
+    "test": "echo 'nothing to do'",
+    "build": "echo 'nothing to do'"
+  },
+  "bin": {
+    "smp": "./SmartPy.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@smartpy/originator": "^0.6.6",
+    "@smartpy/timelock": "^0.0.9",
+    "bs58check": "^2.1.2",
+    "chalk": "^4.1.2",
+    "js-sha3": "^0.8.0",
+    "libsodium-wrappers-sumo": "^0.7.9",
+    "tezos-bls12-381": "^1.1.1"
+  },
+  "gitHead": "cb6f73c600003f8dc35aaf916101970a3b849949"
+}

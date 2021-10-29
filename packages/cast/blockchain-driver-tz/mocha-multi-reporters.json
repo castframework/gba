@@ -1,0 +1,10 @@
+{
+    "reporterEnabled": "mocha-junit-reporter, mocha-sonarqube-reporter, spec",
+    "mochaJunitReporterReporterOptions": {
+        "mochaFile": "../../../reports/junit/ut-blockchain-driver-tz.xml"
+    },
+    "mochaSonarqubeReporterReporterOptions": {
+        "output": "../../../reports/sonar/ut-blockchain-driver-tz.xml",
+        "useFullFilePath": true
+    }
+}

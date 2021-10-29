@@ -1,0 +1,112 @@
+#!/bin/sh
+
+display_help() {
+  echo "Usage: $0 --network-folder [network folder]" >&2
+  echo
+  echo "   -n, --network-folder        Network folder to use"
+  echo
+  exit 1
+}
+
+################################
+# Check if parameters options  #
+# are given on the commandline #
+################################
+while :; do
+  case "$1" in
+  -h | --help)
+    display_help # Call your function
+    exit 0
+    ;;
+  -n | --network-folder)
+    network_folder="$2"
+    shift 2
+    ;;
+
+  --) # End of all options
+    shift
+    break
+    ;;
+  -*)
+    echo "Error: Unknown option: $1" >&2
+    display_help
+    exit 1
+    ;;
+  *) # No more options
+    break
+    ;;
+  esac
+done
+
+PRJT_ROOT="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit 1 ; pwd -P | grep -o '^.*/' )"
+
+NETWORK_FOLDER_DEFAULT="${PRJT_ROOT}/../../../../networks/local"
+NETWORK_FOLDER=$(realpath "${network_folder:-$NETWORK_FOLDER_DEFAULT}")
+KEYS_FILE="${NETWORK_FOLDER}/ethereum/keys.json"
+NODE_FILE="${NETWORK_FOLDER}/ethereum/node.json"
+
+echo "🔎 Using network folder $NETWORK_FOLDER. Looking for config"
+
+if [ ! -d "$NETWORK_FOLDER" ]; then
+  echo "💥 Directory $NETWORK_FOLDER not found"
+  exit 1
+fi
+
+if [ ! -f "$KEYS_FILE" ]; then
+  echo "💥 Keys file $KEYS_FILE not found"
+  exit 1
+fi
+
+if [ ! -f "$NODE_FILE" ]; then
+  echo "💥 Node file $NODE_FILE not found"
+  exit 1
+fi
+
+echo "✅ Config files found"
+
+## Compile and Deploy factory
+echo "🛠 Building contracts"
+
+if npm run build
+then
+    echo "✅ Contracts built"
+else
+    echo "💥 Error during contract build"
+    exit 1
+fi
+
+echo "🛠 Deploying contracts"
+
+
+if npm run deploy -- --network-folder "$NETWORK_FOLDER"
+then
+    echo "✅ Contracts deployed"
+else
+    echo "💥 Error during contract deployment"
+    exit 1
+fi
+
+
+echo "🛠 Extracting abi"
+
+
+if npm run extract:abi
+then
+    echo "✅ Abi extracted"
+else
+    echo "💥 Error during abi extraction"
+    exit 1
+fi
+
+
+echo "🛠 Extracting contracts addresses"
+
+
+if npm run extract:last-deploy -- --network-folder "$NETWORK_FOLDER"
+then
+    echo "✅ Contract addresses extracted"
+else
+    echo "💥 Error during contract addresses extraction"
+    exit 1
+fi
+

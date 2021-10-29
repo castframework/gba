@@ -1,0 +1,9 @@
+extends: "../../../.nycrc.yml"
+exclude:
+  - "packages/cast/types/**/*.spec.ts"
+include:
+  - "packages/cast/types/src/**/*.ts"
+extension:
+  - ".ts"
+cwd: "../../../"
+report-dir: "reports/coverage/ut-types"

@@ -1,0 +1,7 @@
+[
+  {
+    "action": "originate",
+    "path": "src/fa2",
+    "register": "FA2"
+  }
+]

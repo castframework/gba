@@ -1,0 +1,10 @@
+{
+  "ext": "py",
+  "ignore": [
+    "*.smlse",
+    "*.tz",
+    "*.json",
+    "*_pure.py"
+  ],
+  "exec": "npm run build:tez"
+}

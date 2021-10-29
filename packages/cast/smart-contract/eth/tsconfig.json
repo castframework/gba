@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es6",
+    "sourceMap": true,
+    "allowJs": true,
+    "outDir": ".",
+    "rootDir": "src",
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "types"
+    ],
+    "types": [
+      "node",
+      "truffle-contracts"
+    ],
+    "strictNullChecks": true
+  },
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "contracts",
+    "build",
+    "migrations",
+    "test",
+  ]
+}

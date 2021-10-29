@@ -1,0 +1,11 @@
+/abi/*
+/tools/
+/node_modules/
+/build/
+/dist/
+/migrations/
+/test/
+/types/
+/coverage/
+/abi/
+/coverage.json

@@ -1,0 +1,59 @@
+#!/bin/bash
+
+set -e
+
+display_help() {
+  echo "Usage: $0 --network-folder [network folder]" >&2
+  echo
+  echo "   -n, --network-folder        Network folder to use"
+  echo
+  exit 1
+}
+
+################################
+# Check if parameters options  #
+# are given on the commandline #
+################################
+while :; do
+  case "$1" in
+  -h | --help)
+    display_help # Call your function
+    exit 0
+    ;;
+  -n | --network-folder)
+    network_folder="$2"
+    shift 2
+    ;;
+
+  --) # End of all options
+    shift
+    break
+    ;;
+  -*)
+    echo "Error: Unknown option: $1" >&2
+    display_help
+    exit 1
+    ;;
+  *) # No more options
+    break
+    ;;
+  esac
+done
+
+trap killgroup SIGINT
+
+killgroup() {
+  echo killing...
+  kill 0
+}
+
+CURRENT_DIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit 1 ; pwd -P )"
+
+if [ -z ${network_folder+x} ]; then
+  sh -c "${CURRENT_DIR}"/iter-eth | sed 's/^/ETH: /' &
+  sh -c "${CURRENT_DIR}"/iter-tz | sed 's/^/TZ: /' &
+else
+  sh -c "${CURRENT_DIR}/iter-eth --network-folder $network_folder" | sed 's/^/ETH: /' &
+  sh -c "${CURRENT_DIR}/iter-tz --network-folder $network_folder" | sed 's/^/TZ: /' &
+fi
+wait

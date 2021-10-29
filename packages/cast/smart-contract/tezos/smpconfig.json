@@ -1,0 +1,4 @@
+{
+  "srcDir": "src",
+  "pattern": "**/*.contract.py"
+}

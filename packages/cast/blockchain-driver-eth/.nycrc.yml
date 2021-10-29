@@ -1,0 +1,9 @@
+extends: "../../../.nycrc.yml"
+exclude:
+  - "packages/cast/blockchain-driver-eth/**/*.spec.ts"
+include:
+  - "packages/cast/blockchain-driver-eth/src/**/*.ts"
+extension:
+  - ".ts"
+cwd: "../../../"
+report-dir: "reports/coverage/ut-blockchain-driver-eth"

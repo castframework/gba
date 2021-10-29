@@ -1,0 +1,10 @@
+{
+    "reporterEnabled": "mocha-junit-reporter, mocha-sonarqube-reporter, spec",
+    "mochaJunitReporterReporterOptions": {
+        "mochaFile": "../../../reports/junit/ut-transaction-manager.xml"
+    },
+    "mochaSonarqubeReporterReporterOptions": {
+        "output": "../../../reports/sonar/ut-transaction-manager.xml",
+        "useFullFilePath": true
+    }
+}

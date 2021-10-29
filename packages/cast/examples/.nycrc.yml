@@ -1,0 +1,9 @@
+extends: "../../../.nycrc.yml"
+exclude:
+  - "packages/cast/blockchain-abstract/**/*.spec.ts"
+include:
+  - "packages/cast/blockchain-abstract/src/**/*.ts"
+extension:
+  - ".ts"
+cwd: "../../../"
+report-dir: "reports/coverage/ut-examples"

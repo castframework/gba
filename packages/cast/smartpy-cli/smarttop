@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+$(dirname "$0")/smarttop.exe -I $OPAM_SWITCH_PREFIX/lib/utils_pure -I $OPAM_SWITCH_PREFIX/lib/smartML -ppx $(dirname "$0")/driver.exe "$@"

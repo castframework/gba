@@ -1,0 +1,7 @@
+/node_modules
+*.smlse
+*.tz
+contract_types.sp
+contract_compiled.json
+__pycache__/
+last-deploy.json

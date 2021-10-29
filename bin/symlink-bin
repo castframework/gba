@@ -1,0 +1,15 @@
+#!/bin/sh
+
+binpaths=$($(npm bin)/lerna list -all -l --json | jq '.[].location' | tr -d '"')
+
+for package in $binpaths;do
+(
+    mkdir -p "$package/node_modules/.bin"
+    absoluteLinkTarget=$(realpath ./node_modules/.bin)
+    for binary in $(ls $absoluteLinkTarget); do
+    (
+        ln -sf $absoluteLinkTarget/$binary "$package/node_modules/.bin/$binary"
+    )
+    done
+)
+done
