@@ -164,15 +164,14 @@ jobs:
           git config --global user.email "ci@github.com"
           git config --global user.name "CI"
 
-# TODO: decomment this when we want to really publish the packages
-#      - name: Publish packages
-#        run: |
-#          lerna version --yes --conventional-commits --conventional-prerelease --force-publish
-#          lerna publish from-package --yes --no-verify-access --dist-tag next
-#        if: ${{ matrix.node == '16'  && matrix.architecture == 'x64' }}
-#        env:
-#          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-#          GH_TOKEN: ${{ github.token }}
+      - name: Publish packages
+        run: |
+          lerna version --yes --conventional-commits --conventional-prerelease --force-publish
+          lerna publish from-package --yes --no-verify-access --dist-tag next
+        if: ${{ matrix.node == '16'  && matrix.architecture == 'x64' }}
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
 
 #  build-docker-image:
 #    name: Build base image
