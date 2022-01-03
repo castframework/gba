@@ -72,5 +72,5 @@
     "access": "restricted"
   },
   "types": "dist/index.d.ts",
-  "version": "1.0.1"
+  "version": "1.0.2-alpha.0"
 }
