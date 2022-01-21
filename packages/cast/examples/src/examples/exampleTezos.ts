@@ -1,7 +1,7 @@
 import {
   TezosBlockchainDriver,
   PrivateKeySigner,
-  extractAddressFromSecret
+  extractAddressFromSecret,
 } from '@castframework/blockchain-driver-tz';
 import { TransactionManager } from '@castframework/transaction-manager';
 import * as log4js from 'log4js';
@@ -10,10 +10,7 @@ import {
   getTezosExampleContractAddress,
   getTezosNodeUrl,
 } from '../helpers';
-import { getAbi } from '../blockchainSpecific';
 import { ContractType } from '../types';
-import { first, multicast, shareReplay } from 'rxjs/operators';
-import { ReplaySubject } from 'rxjs';
 import { FA2ViewMappers } from '../blockchainSpecific/tz/viewMappers/FA2';
 import { MichelsonMap } from '@taquito/taquito';
 import { BigNumber } from 'bignumber.js';
@@ -34,7 +31,9 @@ async function send(): Promise<void> {
     driver: driver,
   });
 
-  const ExampleContractAddress = getTezosExampleContractAddress(ContractType.FA2);
+  const ExampleContractAddress = getTezosExampleContractAddress(
+    ContractType.FA2,
+  );
   const publicKey1 = extractAddressFromSecret(getTezosPrivateKey('admin'));
   console.log({ publicKey1 });
 
@@ -43,20 +42,21 @@ async function send(): Promise<void> {
     methodParameters: [],
     to: ExampleContractAddress,
     blockchainSpecificParams: {
-      viewMappers: FA2ViewMappers
+      viewMappers: FA2ViewMappers,
     },
   });
-  const count_tokens = (count_tokensPromise as BigNumber).toNumber()
-  console.log({count_tokens});
+  const count_tokens = (count_tokensPromise as BigNumber).toNumber();
+  console.log({ count_tokens });
 
-
-  const michelsonMap = MichelsonMap.fromLiteral({ symbol: char2Bytes(`token_${count_tokens+1}`) });
+  const michelsonMap = MichelsonMap.fromLiteral({
+    symbol: char2Bytes(`token_${count_tokens + 1}`),
+  });
   const txHash = await transactionManager.send({
     methodName: 'mint',
-    methodParameters: [[publicKey1, 0, michelsonMap, count_tokens]],
+    methodParameters: [publicKey1, 0, michelsonMap, count_tokens],
     to: ExampleContractAddress,
     blockchainSpecificParams: {
-      viewMappers: FA2ViewMappers
+      viewMappers: FA2ViewMappers,
     },
   });
   console.log({ txHash });
@@ -71,8 +71,6 @@ async function send(): Promise<void> {
   // });
   // const get_balance = (get_balancePromise as BigNumber).toNumber()
   // console.log({get_balance});
-
-  
 
   await transactionManager.close();
 }

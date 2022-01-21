@@ -48,6 +48,7 @@ import {
   ContractAbstraction,
   ContractProvider,
   Filter,
+  MichelsonMap,
   OpKind,
   SetProviderOptions,
   TezosToolkit,
@@ -65,6 +66,7 @@ import { BigNumber } from 'bignumber.js';
 import { SignerToTaquitoSigner } from './signer';
 import { waitFor } from './utils/promiseUtils';
 import { errorAsString, getTezosErrorMessage } from './utils/errorAsString';
+import { trashBinLogger } from '@castframework/utils';
 
 export interface ContractWithEventsStorage {
   eventSinkContractAddress: string;
@@ -82,7 +84,7 @@ export class TezosBlockchainDriver
   private static NONCE_ERRORS = ['already used for contract'];
   private static CONNECTION_ERRORS = [];
 
-  private logger: Logger;
+  private logger: Logger = trashBinLogger;
   private tezosToolkit: TezosToolkit;
   private nodeUrl: string;
   private config: Required<TezosConfig>;
@@ -790,30 +792,48 @@ export class TezosBlockchainDriver
   }
 
   private buildTezosParameters(methodParameters: any[]): any {
-    let parameters = methodParameters;
-    if (
-      methodParameters.length === 1 &&
-      typeof methodParameters[0] === 'object' &&
-      !BigNumber.isBigNumber(methodParameters[0]) // prevent BigNumber from being destructured
-    ) {
-      this.logger.debug('Destructuring object from method parameters');
-      parameters = [];
-      for (const [_, value] of Object.entries(methodParameters[0])) {
-        parameters.push(value);
-      }
+    let parameters: any[] = [];
 
-      return parameters;
+    for (const parameter of methodParameters) {
+      switch (typeof parameter) {
+        case 'number':
+        case 'bigint':
+        case 'boolean':
+        case 'string':
+          parameters.push(parameter);
+          break;
+
+        case 'object':
+          if (BigNumber.isBigNumber(parameter)) {
+            parameters.push(parameter.toFixed());
+            break;
+          }
+
+          if (MichelsonMap.isMichelsonMap(parameter)) {
+            parameters.push(parameter);
+            break;
+          }
+
+          if (Array.isArray(parameter)) {
+            parameters = [
+              ...parameters,
+              ...this.buildTezosParameters(parameter as any[]),
+            ];
+            break;
+          }
+
+          parameters = [
+            ...parameters,
+            ...this.buildTezosParameters(Object.values(parameter)),
+          ];
+          break;
+
+        default:
+          throw new Error(`Unrecognized parameter type: ${typeof parameter}`);
+      }
     }
 
-    // Mapping Bignumber to string for Tezos
-    const result = methodParameters.map((param) => {
-      if (BigNumber.isBigNumber(param)) {
-        return param.toFixed();
-      }
-      return param;
-    });
-
-    return result;
+    return parameters;
   }
 
   public async close(): Promise<void> {
