@@ -21,6 +21,7 @@ import {
   EthereumSignedTx,
   EthereumSpecificParams,
   EthereumTx,
+  EthereumSpecificTransactionInfo,
 } from './types';
 import Web3 from 'web3';
 import { WebsocketProviderOptions } from 'web3-core-helpers';
@@ -35,7 +36,7 @@ import {
 import { Subscription } from 'web3-core-subscriptions';
 import { defaultConfig } from './defaultConfig';
 import { filter, mapTo, switchMap, switchMapTo, tap } from 'rxjs/operators';
-import { EthereumSpecificTransactionInfo } from './types';
+
 import { errorAsString } from './utils/errorAsString';
 import parseReceiptEvents from 'web3-parse-receipt-events';
 

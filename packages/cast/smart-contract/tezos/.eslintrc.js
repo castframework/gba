@@ -14,10 +14,12 @@ module.exports = {
   },
   extends: [
     'plugin:@typescript-eslint/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
     'prettier',
     'prettier/@typescript-eslint',
   ],
-  plugins: ['prettier', '@typescript-eslint/eslint-plugin'],
+  plugins: ['prettier', '@typescript-eslint/eslint-plugin','import'],
   rules: {
     'prettier/prettier': [1, prettierOptions],
     '@typescript-eslint/explicit-function-return-type': [
@@ -28,7 +30,8 @@ module.exports = {
       },
     ],
     '@typescript-eslint/no-parameter-properties': 0,
-    "@typescript-eslint/no-floating-promises": ["error"]
+    "@typescript-eslint/no-floating-promises": ["error"],
+    "import/no-extraneous-dependencies" : "error"
   },
   settings: {
     'import/resolver': {

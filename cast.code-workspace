@@ -15,61 +15,49 @@
   },
   "folders": [
     {
-      "name": "CAST chain-auth",
-      "path": "packages/cast/chain-auth"
-    },
-    {
-      "name": "CAST transaction-manager",
+      "name": "transaction-manager",
       "path": "packages/cast/transaction-manager"
     },
     {
-      "name": "CAST blockchain-abstract",
-      "path": "packages/cast/blockchain-abstract"
-    },
-    {
-      "name": "CAST blockchain-driver-eth",
+      "name": "blockchain-driver-eth",
       "path": "packages/cast/blockchain-driver-eth"
     },
     {
-      "name": "CAST blockchain-driver-tz",
+      "name": "blockchain-driver-tz",
       "path": "packages/cast/blockchain-driver-tz"
     },
     {
-      "name": "CAST swift-encoder",
-      "path": "packages/cast/swift-encoder"
+      "name": "types",
+      "path": "packages/cast/types"
     },
     {
-      "name": "CAST models",
-      "path": "packages/cast/models"
+      "name": "utils",
+      "path": "packages/cast/utils"
     },
     {
-      "name": "CAST oracle-clients",
-      "path": "packages/cast/oracle-clients"
+      "name": "examples",
+      "path": "packages/cast/examples"
     },
     {
-      "name": "CAST oracles",
-      "path": "packages/cast/oracles"
-    },
-    {
-      "name": "smart-contract-eth",
-      "path": "packages/castf/smart-contract/eth"
-    },
-    {
-      "name": "smart-contract-tezos",
-      "path": "packages/castf/smart-contract/tezos"
+      "name": "testing",
+      "path": "packages/cast/testing"
     },
     {
       "name": "smartpy-cli",
       "path": "packages/cast/smartpy-cli"
     },
     {
-      "name": "charts",
-      "path": "charts"
+      "name": "smart-contract-eth",
+      "path": "packages/cast/smart-contract/eth"
+    },
+    {
+      "name": "smart-contract-tezos",
+      "path": "packages/cast/smart-contract/tezos"
     },
     {
       "name": "cast-framework",
       "path": "."
-    },
+    }
   ],
   "settings": {
     "conventionalCommits.scopes": [

@@ -43,7 +43,9 @@ describe('ERC20', () => {
 
   it('erc20', async () => {
     const abi = getAbi(ContractType.ERC20);
-    const ExampleERC20Address = getEthExampleContractAddress(ContractType.ERC20);
+    const ExampleERC20Address = getEthExampleContractAddress(
+      ContractType.ERC20,
+    );
     const tokenToTransfer = 1;
     const publicKey2 = getEthAddress(getEthPrivateKey('2'));
     const publicKey3 = getEthAddress(getEthPrivateKey('2'));
@@ -89,14 +91,17 @@ describe('ERC20', () => {
     expect(event.smartContractAddress).to.be.equal(ExampleERC20Address);
 
     // Method waitForConfirmation
-    await transactionManager.waitForConfirmation(txHash.transactionId)
+    await transactionManager.waitForConfirmation(txHash.transactionId);
 
     // Method getTransactionInfo
-    const getTransactionInfoResult = await transactionManager.getTransactionInfo(txHash.transactionId);
+    const getTransactionInfoResult =
+      await transactionManager.getTransactionInfo(txHash.transactionId);
     expect(getTransactionInfoResult.id).to.be.equal(txHash.transactionId);
     expect(getTransactionInfoResult.status).to.be.equal('CONFIRMED');
     expect(getTransactionInfoResult.details.methodName).to.be.equal('transfer');
-    expect(getTransactionInfoResult.details.to).to.be.equal(ExampleERC20Address);
+    expect(getTransactionInfoResult.details.to).to.be.equal(
+      ExampleERC20Address,
+    );
     expect(getTransactionInfoResult.emittedEvents).to.not.be.undefined;
 
     await transactionManager.send({
@@ -107,14 +112,17 @@ describe('ERC20', () => {
         abi,
       },
       transactionParams: {
-        previousTransactions: [txHash.transactionId]
-      }
+        previousTransactions: [txHash.transactionId],
+      },
     });
 
     // Method getTransactionsInfo
-    const getTransactionInfosResult = await transactionManager.getTransactionsInfo();
+    const getTransactionInfosResult =
+      await transactionManager.getTransactionsInfo();
     expect(getTransactionInfosResult.length).to.be.equal(2);
-    expect(getTransactionInfosResult[0].nonce).to.be.equal(getTransactionInfosResult[1].nonce - 1);
+    expect(getTransactionInfosResult[0].nonce).to.be.equal(
+      getTransactionInfosResult[1].nonce - 1,
+    );
 
     const balanceOfafter: string = await transactionManager.call({
       methodName: 'balanceOf',
@@ -124,7 +132,8 @@ describe('ERC20', () => {
         abi,
       },
     });
-    expect(Number.parseInt(balanceOfafter)).to.be.equal(Number.parseInt(balanceOfBefore) + 2);
-
-  }).timeout('60sec');;
-})
+    expect(Number.parseInt(balanceOfafter)).to.be.equal(
+      Number.parseInt(balanceOfBefore) + 2,
+    );
+  }).timeout('60sec');
+});

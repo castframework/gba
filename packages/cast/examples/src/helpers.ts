@@ -22,7 +22,7 @@ export function getEnvProcess() {
   if (networkFolder === undefined) {
     throw new Error('Envrionment variable NETWORK_FOLDER must be set');
   }
-  return {networkFolder};
+  return { networkFolder };
 }
 
 export function isNodeFileValid(nodeFile: unknown): nodeFile is NodeFile {
@@ -146,7 +146,7 @@ export function getEthExampleContractAddress(
   } catch {
     throw new Error(`Error while reading contracts file ${contractFilePath}`);
   }
-  if (!isContractsFileValid(contractFile,contractType)) {
+  if (!isContractsFileValid(contractFile, contractType)) {
     throw new Error(`Invalid contracts file at ${contractFilePath}`);
   }
   return contractFile[contractType];
@@ -163,7 +163,7 @@ export function getTezosExampleContractAddress(
   } catch {
     throw new Error(`Error while reading contracts file ${contractFilePath}`);
   }
-  if (!isContractsFileValid(contractFile,contractType)) {
+  if (!isContractsFileValid(contractFile, contractType)) {
     throw new Error(`Invalid contracts file at ${contractFilePath}`);
   }
   return contractFile[contractType];

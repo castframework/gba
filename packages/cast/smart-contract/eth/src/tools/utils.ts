@@ -1,4 +1,3 @@
-import * as YAML from 'yaml';
 import * as fs from 'fs';
 import {
   addHexPrefix,
