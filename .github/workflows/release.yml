@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '12', '14', '16' ]
-        architecture: [ 'x64' ]
+        node: ["12", "14", "16"]
+        architecture: ["x64"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           architecture: ${{ matrix.architecture }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install
         run: |
@@ -30,6 +30,10 @@ jobs:
       - name: Build
         run: |
           lerna run build
+
+      - name: Lint
+        run: |
+          lerna run lint
 
       - name: Test
         run: |
@@ -64,8 +68,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '16' ]
-        architecture: [ 'x64' ]
+        node: ["16"]
+        architecture: ["x64"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -75,7 +79,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           architecture: ${{ matrix.architecture }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install
         run: |
@@ -88,7 +92,6 @@ jobs:
         run: |
           docker-compose up -d
           docker-compose ps
-
 
       - name: Setup blockchains
         run: |
@@ -125,8 +128,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '16' ]
-        architecture: [ 'x64' ]
+        node: ["16"]
+        architecture: ["x64"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -136,7 +139,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           architecture: ${{ matrix.architecture }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install
         run: |
@@ -169,7 +172,6 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GH_TOKEN: ${{ github.token }}
-
 #  build-docker-image:
 #    name: Build base image
 #    runs-on: ubuntu-latest
