@@ -167,7 +167,7 @@ jobs:
       - name: Publish packages
         run: |
           lerna version --yes --conventional-commits --conventional-graduate --force-publish --create-release github
-          lerna publish from-package --yes --no-verify-access
+          lerna publish from-package --yes --no-verify-access --dist-tag latest
         if: ${{ matrix.node == '16'  && matrix.architecture == 'x64' }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
