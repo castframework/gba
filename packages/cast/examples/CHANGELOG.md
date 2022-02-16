@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.3-alpha.1 (2022-02-16)
+
+
+### Bug Fixes
+
+* set packages public on npm ([b13dc9e](https://github.com/castframework/cast/commit/b13dc9e677de97f6c60b47bef1457e7b9984df02))
+
+
+
+
+
 ## 1.0.3-alpha.0 (2022-02-15)
 
 **Note:** Version bump only for package @castframework/examples
