@@ -68,9 +68,6 @@
   "lint-staged": {
     "*.ts": "eslint --ignore-path .gitignore --quiet"
   },
-  "publishConfig": {
-    "access": "restricted"
-  },
   "types": "dist/index.d.ts",
   "version": "1.0.3-alpha.0"
 }
