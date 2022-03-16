@@ -1,4 +1,8 @@
 <p align="center">
+  Generic Blockchain Adapter
+</p>
+
+<p align="center">
   <img src="https://www.cast-framework.com/wp-content/themes/forge-framework/img/logo-cast-w.svg" alt="drawing" width="200"/>
 </p>
 
