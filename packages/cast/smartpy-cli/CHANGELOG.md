@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.4-alpha.1 (2022-04-19)
+
+
+### Bug Fixes
+
+* update solc version ([7b771db](https://github.com/castframework/gba/commit/7b771db9561b54b6dc40544a5b934d9f092fffa5))
+
+
+
+
+
 ## 1.0.4-alpha.0 (2022-03-16)
 
 **Note:** Version bump only for package @castframework/smartpy-cli

@@ -69,5 +69,5 @@
     "*.ts": "eslint --ignore-path .gitignore --quiet"
   },
   "types": "dist/index.d.ts",
-  "version": "1.0.4-alpha.0"
+  "version": "1.0.4-alpha.1"
 }
