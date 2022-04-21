@@ -72,7 +72,7 @@ describe('FA2', () => {
     });
     const txHash = await transactionManager.send({
       methodName: 'mint',
-      methodParameters: [[publicKey1, 0, michelsonMap, count_tokens]],
+      methodParameters: [publicKey1, 0, michelsonMap, count_tokens],
       to: ExampleContractAddress,
       blockchainSpecificParams: {
         viewMappers: FA2ViewMappers,
@@ -99,7 +99,7 @@ describe('FA2', () => {
     });
     const txHash2 = await transactionManager.send({
       methodName: 'mint',
-      methodParameters: [[publicKey1, 0, michelsonMap2, count_tokens + 1]],
+      methodParameters: [publicKey1, 0, michelsonMap2, count_tokens + 1],
       to: ExampleContractAddress,
       blockchainSpecificParams: {
         viewMappers: FA2ViewMappers,

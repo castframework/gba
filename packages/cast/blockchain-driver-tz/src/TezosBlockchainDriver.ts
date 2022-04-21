@@ -815,10 +815,7 @@ export class TezosBlockchainDriver
           }
 
           if (Array.isArray(parameter)) {
-            parameters = [
-              ...parameters,
-              ...this.buildTezosParameters(parameter as any[]),
-            ];
+            parameters.push(parameter);
             break;
           }
 
