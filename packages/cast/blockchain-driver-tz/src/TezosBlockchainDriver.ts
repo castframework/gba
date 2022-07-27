@@ -790,7 +790,23 @@ export class TezosBlockchainDriver
       error.message.includes(message),
     );
   }
-
+  private isArrayContainNoPrimitiveType(parameters: any[]): boolean {
+    const primitiveTypes = [
+      'number',
+      'string',
+      'boolean',
+      'bigint',
+      'symbol',
+      'undefined',
+      'null',
+    ];
+    for (const element of parameters) {
+      if (!primitiveTypes.includes(typeof element)) {
+        return true;
+      }
+    }
+    return false;
+  }
   private buildTezosParameters(methodParameters: any[]): any {
     let parameters: any[] = [];
 
@@ -815,7 +831,12 @@ export class TezosBlockchainDriver
           }
 
           if (Array.isArray(parameter)) {
-            parameters.push(parameter);
+            if (this.isArrayContainNoPrimitiveType(parameter))
+              parameters = [
+                ...parameters,
+                ...this.buildTezosParameters(parameter as any[]),
+              ];
+            else parameters.push(parameter);
             break;
           }
 
