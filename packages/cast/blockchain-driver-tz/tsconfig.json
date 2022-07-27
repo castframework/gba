@@ -9,7 +9,7 @@
     "module": "commonjs",
     "noImplicitAny": false,
     "outDir": "./dist",
-    "lib": ["es6", "dom", "es2017"],
+    "lib": ["es6","es2017"],
     "preserveConstEnums": true,
     "removeComments": true,
     "resolveJsonModule": true,
