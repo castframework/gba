@@ -39,6 +39,12 @@ import { filter, mapTo, switchMap, switchMapTo, tap } from 'rxjs/operators';
 
 import { errorAsString } from './utils/errorAsString';
 import parseReceiptEvents from 'web3-parse-receipt-events';
+import {
+  addHexPrefix,
+  bufferToHex,
+  publicToAddress,
+  toBuffer,
+} from 'ethereumjs-util';
 
 export { Logger } from 'log4js';
 
@@ -101,7 +107,7 @@ export class EthereumBlockchainDriver
     this.logger.trace(
       `Starting initialization with config[${JSON.stringify(
         this.config,
-      )}] signingAddress[${this.params.signer.getPublicKey()}]`,
+      )}] signingAddress[${await this.getAddress()}]`,
     );
     this.web3 = this.getWeb3Instance(this.params.config);
     await this.startKeepAlive();
@@ -1071,5 +1077,11 @@ export class EthereumBlockchainDriver
     // stop polling for confirmations once the transaction is considered confirmed
     web3.eth.transactionConfirmationBlocks = config.numberOfConfirmation;
     return web3;
+  }
+
+  public async getAddress(): Promise<string> {
+    const pk = this.params.signer.getPublicKey();
+    const address = addHexPrefix(bufferToHex(publicToAddress(toBuffer(pk))));
+    return address;
   }
 }
