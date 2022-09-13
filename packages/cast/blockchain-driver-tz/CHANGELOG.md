@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0-alpha.0 (2022-09-13)
+
+
+### Features
+
+* :sparkles: add BlockchainIdentityProvider interface ([#6](https://github.com/castframework/gba/issues/6)) ([02513df](https://github.com/castframework/gba/commit/02513dfd7702c72b3288a8cb0d71cbb0b9671678))
+
+
+
+
+
 ## 1.0.4-alpha.3 (2022-07-27)
 
 **Note:** Version bump only for package @castframework/blockchain-driver-tz
