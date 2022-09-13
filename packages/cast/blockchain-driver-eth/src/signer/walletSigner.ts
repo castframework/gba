@@ -3,7 +3,7 @@ import { Signer } from '@castframework/types';
 import {
   addHexPrefix,
   bufferToHex,
-  privateToPublic,
+  privateToAddress,
   toBuffer,
 } from 'ethereumjs-util';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -32,7 +32,7 @@ export class PrivateKeySigner implements Signer<EthereumTx, EthereumSignedTx> {
 
   public getPublicKey(): string {
     return addHexPrefix(
-      bufferToHex(privateToPublic(toBuffer(this.privateKey))),
+      bufferToHex(privateToAddress(toBuffer(this.privateKey))),
     );
   }
 }
