@@ -1,8 +1,5 @@
 name: Pre-Release(Retry Publish)
-on:
-  push:
-    branches:
-      - main
+on: workflow_dispatch
 
 jobs:
   tests:
