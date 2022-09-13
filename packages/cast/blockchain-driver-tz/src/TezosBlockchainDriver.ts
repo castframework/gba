@@ -132,9 +132,7 @@ export class TezosBlockchainDriver
     this.logger.trace(
       `Starting initialization with config[${JSON.stringify(
         this.config,
-      )}] signingAddress[${extractAddressFromPublicKey(
-        this.params.signer.getPublicKey(),
-      )}]`,
+      )}] signingAddress[${await this.getAddress()}]`,
     );
     this.tezosToolkit = this.getTezosToolkit(this.config);
     const newBlocks$ = this.listenNewBlocks().pipe(takeUntil(this.close$));
@@ -887,5 +885,11 @@ export class TezosBlockchainDriver
     });
 
     return tezosToolkit;
+  }
+
+  public async getAddress(): Promise<string> {
+    const pk = this.params.signer.getPublicKey();
+    const address = extractAddressFromPublicKey(pk);
+    return address;
   }
 }
