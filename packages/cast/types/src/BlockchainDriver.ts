@@ -143,14 +143,10 @@ export class RetriableError {
   constructor(private error: any) {}
 }
 
-export interface BlockchainIdentityProvider {
-  getAddress(): Promise<string>;
-}
-
 export interface BlockchainDriver<
   BlockchainSpecificParams,
   BlockchainSpecificTransactionInfo,
-> extends BlockchainIdentityProvider {
+> {
   //new(params: BlockchainDriverParams<TxType, SignedTxType, ConfigType>);
   initialize(): Promise<void>;
   setLogger(logger: Logger): void;
