@@ -2,9 +2,9 @@
   "author": "Cast Framework",
   "description": "Interface with the blockchain",
   "dependencies": {
-    "@castframework/blockchain-driver-eth": "^1.1.0-alpha.1",
-    "@castframework/blockchain-driver-tz": "^1.1.0-alpha.1",
-    "@castframework/transaction-manager": "^1.1.0-alpha.1",
+    "@castframework/blockchain-driver-eth": "^1.1.0-alpha.2",
+    "@castframework/blockchain-driver-tz": "^1.1.0-alpha.2",
+    "@castframework/transaction-manager": "^1.1.0-alpha.2",
     "@taquito/taquito": "^10.2.1",
     "@taquito/tzip16": "^10.2.1",
     "bignumber.js": "^9.0.1",
@@ -78,5 +78,5 @@
     "*.ts": "eslint --ignore-path .gitignore --quiet"
   },
   "types": "dist/index.d.ts",
-  "version": "1.1.0-alpha.1"
+  "version": "1.1.0-alpha.2"
 }

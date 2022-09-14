@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0-alpha.2 (2022-09-14)
+
+
+### Features
+
+* :sparkles: add public key to identity interface ([#7](https://github.com/castframework/gba/issues/7)) ([b8e749f](https://github.com/castframework/gba/commit/b8e749fa9618bb2c500a84764339a84e559159c7))
+
+
+
+
+
 # [1.1.0-alpha.1](https://github.com/castframework/gba/compare/v1.1.0-alpha.0...v1.1.0-alpha.1) (2022-09-14)
 
 **Note:** Version bump only for package @castframework/smartpy-cli
