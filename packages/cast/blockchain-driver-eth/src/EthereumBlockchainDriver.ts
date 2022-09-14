@@ -1084,4 +1084,8 @@ export class EthereumBlockchainDriver
     const address = addHexPrefix(bufferToHex(publicToAddress(toBuffer(pk))));
     return address;
   }
+
+  public async getPublicKey(): Promise<string> {
+    return this.params.signer.getPublicKey();
+  }
 }

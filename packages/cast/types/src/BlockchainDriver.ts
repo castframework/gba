@@ -145,6 +145,7 @@ export class RetriableError {
 
 export interface BlockchainIdentityProvider {
   getAddress(): Promise<string>;
+  getPublicKey(): Promise<string>;
 }
 
 export interface BlockchainDriver<

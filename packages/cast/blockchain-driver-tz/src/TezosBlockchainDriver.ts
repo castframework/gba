@@ -892,4 +892,8 @@ export class TezosBlockchainDriver
     const address = extractAddressFromPublicKey(pk);
     return address;
   }
+
+  public async getPublicKey(): Promise<string> {
+    return this.params.signer.getPublicKey();
+  }
 }
