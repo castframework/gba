@@ -47,36 +47,34 @@ import {
 import {
   ContractAbstraction,
   ContractProvider,
-  Filter,
   MichelsonMap,
-  OpKind,
+  PollingSubscribeProvider,
   SetProviderOptions,
   TezosOperationError,
   TezosToolkit,
   TransactionOperation,
 } from '@taquito/taquito';
-import {
-  BlockResponse,
-  InternalOperationResult,
-  OperationContentsAndResultTransaction,
-} from '@taquito/rpc';
+import { BlockResponse, OperationEntry } from '@taquito/rpc';
 import { HttpResponseError, STATUS_CODE } from '@taquito/http-utils';
-import { flattenDeep } from 'lodash';
-import { evaluateFilter } from '@taquito/taquito/dist/lib/subscribe/filters';
-import { extractAddressFromPublicKey, mic2arr } from './utils';
+import { extractAddressFromPublicKey } from './utils';
 import { BigNumber } from 'bignumber.js';
 import { SignerToTaquitoSigner } from './signer';
 import { waitFor } from './utils/promiseUtils';
 import { errorAsString, getTezosErrorMessage } from './utils/errorAsString';
 import { trashBinLogger } from '@castframework/utils';
-
+import * as R from 'ramda';
+import {
+  formatEvent,
+  getAllContentsAddOpHash,
+  getAllInternalOperationAddOpHash,
+  takeEvent,
+  takeOperationContentToAddressWithInternalOp,
+} from './rpcParser';
 export interface ContractWithEventsStorage {
   eventSinkContractAddress: string;
 }
 
 export { Logger } from 'log4js';
-
-const DEFAULT_EVENT_SINK_PROPERTY = 'eventSinkContractAddress';
 
 export class TezosBlockchainDriver
   implements
@@ -380,48 +378,24 @@ export class TezosBlockchainDriver
     params: ListenParams<TezosSpecificParams>,
   ): Observable<EventType> {
     this.logger.trace(`Listen with params ${JSON.stringify(params)}`);
-    // To listen on a contract, the contract MUST have a eventSinkContractAddress property at the root of the storage
 
-    const eventSinkProperty =
-      params.blockchainSpecificParams?.eventSinkProperty ??
-      DEFAULT_EVENT_SINK_PROPERTY;
+    const initializeTezosToolKit = switchMap((tezosToolkit) => {
+      if (tezosToolkit === undefined) {
+        return from(this.initialize()).pipe(
+          switchMap(() => of(this.tezosToolkit)),
+        );
+      }
+      return of(this.tezosToolkit);
+    });
 
     return of(this.tezosToolkit).pipe(
-      switchMap((tezosToolkit) => {
-        if (tezosToolkit === undefined) {
-          return from(this.initialize()).pipe(
-            switchMap(() => of(this.tezosToolkit)),
-          );
-        }
-        return of(this.tezosToolkit);
-      }),
-      switchMap((tezosToolkit) =>
-        from(tezosToolkit.contract.at(params.smartContractAddress)).pipe(
-          switchMap((contract) =>
-            from(contract.storage<ContractWithEventsStorage>()),
-          ),
-          map((storage) => {
-            if (
-              storage[eventSinkProperty] === null ||
-              storage[eventSinkProperty] === undefined
-            ) {
-              throw new Error(
-                `No event sink contract address for contract at address ${params.smartContractAddress} in storage field ${eventSinkProperty}`,
-              );
-            }
-            return storage[eventSinkProperty];
-          }),
-          switchMap((eventSinkAddress) =>
-            this._listen<EventType>(params, eventSinkAddress),
-          ),
-        ),
-      ),
+      initializeTezosToolKit,
+      switchMap(() => this._listen<EventType>(params)),
     );
   }
 
   private _listen<EventType extends Event<string>>(
     params: ListenParams<TezosSpecificParams>,
-    eventSinkAddress: string,
   ): Observable<EventType> {
     const {
       from: fromBlock,
@@ -440,7 +414,7 @@ export class TezosBlockchainDriver
     this.logger.debug(
       `Listening to event ${params.eventName} from block ${
         params.from ?? 'latest'
-      } on ${eventSinkAddress} for smart contract ${
+      } for smart contract ${
         params.smartContractAddress
       } with Tezos Specific params ${JSON.stringify(
         params.blockchainSpecificParams,
@@ -451,7 +425,6 @@ export class TezosBlockchainDriver
         from(
           this.blockToEvents<EventType>(
             block,
-            eventSinkAddress,
             smartContractAddress,
             eventName,
             eventMappers,
@@ -497,7 +470,6 @@ export class TezosBlockchainDriver
 
   private blockToEvents<EventType extends Event<string>>(
     block: BlockResponse,
-    eventSinkAddress: string,
     smartContractAddress: string,
     eventNameFilter: EventType['eventName'],
     eventMappers: EventMappers,
@@ -506,95 +478,29 @@ export class TezosBlockchainDriver
     const blockNumber = block.header.level;
     const blockHash = block.hash;
 
-    const events: EventType[] = [];
+    this.logger.trace(`Handling block [${blockNumber}:${blockHash}] `);
 
-    for (const ops of block.operations) {
-      for (const operation of ops) {
-        // if specificOperationHash is provided, ignore all other operation
-        if (
-          specificOperationHash !== undefined &&
-          operation.hash !== specificOperationHash
-        ) {
-          continue;
-        }
-        for (const operationContent of operation.contents) {
-          if (
-            evaluateFilter(operationContent, {
-              destination: smartContractAddress,
-            } as Filter) &&
-            operationContent.kind === OpKind.TRANSACTION
-          ) {
-            // this.logger.debug(
-            //   `TezosContract[${smartContractAddress}] - In block[${blockNumber}] New operation ${JSON.stringify(
-            //     operationContent,
-            //   )}`,
-            // );
-            const transactionOperationContentAndResults: OperationContentsAndResultTransaction =
-              operationContent as OperationContentsAndResultTransaction;
-            if (
-              !transactionOperationContentAndResults.metadata
-                .internal_operation_results
-            ) {
-              continue;
-            }
-            transactionOperationContentAndResults.metadata.internal_operation_results.forEach(
-              (internalOperationResult: InternalOperationResult) => {
-                if (
-                  internalOperationResult.kind === OpKind.TRANSACTION &&
-                  internalOperationResult.destination === eventSinkAddress
-                ) {
-                  const parameters = internalOperationResult.parameters;
-                  const eventName = parameters?.entrypoint;
-                  const arr = mic2arr(parameters?.value);
-                  const params = Array.isArray(arr)
-                    ? flattenDeep<any>(arr)
-                    : [arr];
-                  if (
-                    eventNameFilter === undefined ||
-                    eventNameFilter === eventName ||
-                    eventNameFilter === 'allEvents'
-                  ) {
-                    this.logger.debug(
-                      `TezosContract[${smartContractAddress}] - In block[${blockNumber}] New event with eventName[${eventName}] parameters[${JSON.stringify(
-                        params,
-                      )}]`,
-                    );
+    const specificOpHashFilter = R.filter(
+      (operation: OperationEntry) =>
+        specificOperationHash === undefined ||
+        operation.hash === specificOperationHash,
+    );
 
-                    if (eventName === undefined) {
-                      this.logger.error(
-                        `No event name (entrypoint) found for event ${eventName}`,
-                      );
-                      throw new Error(
-                        `No event name (entrypoint) found for event ${eventName}`,
-                      );
-                    }
+    const events = R.pipe(
+      R.flatten as (any) => OperationEntry[],
+      specificOpHashFilter,
+      getAllContentsAddOpHash,
+      takeOperationContentToAddressWithInternalOp(smartContractAddress),
+      getAllInternalOperationAddOpHash,
+      takeEvent(eventNameFilter),
+      formatEvent(smartContractAddress, blockNumber, blockHash, eventMappers),
+    )(block.operations);
 
-                    if (eventMappers?.[eventName] === undefined) {
-                      this.logger.error(
-                        `No event mapper for event ${eventName}`,
-                      );
-                      throw new Error(`No event mapper for event ${eventName}`);
-                    }
+    this.logger.info(
+      `For Event [${eventNameFilter}] In block [${blockNumber}:${blockHash}] found : ${events}`,
+    );
 
-                    const event = {
-                      eventName: eventName,
-                      blockNumber: blockNumber,
-                      payload: eventMappers?.[eventName](eventName, params),
-                      transactionId: operation.hash,
-                      blockHash: blockHash,
-                      smartContractAddress: smartContractAddress,
-                    } as EventType;
-
-                    events.push(event);
-                  }
-                }
-              },
-            );
-          }
-        }
-      }
-    }
-    return events;
+    return events as EventType[];
   }
 
   public async send<MethodParametersType extends unknown[]>(
@@ -724,12 +630,6 @@ export class TezosBlockchainDriver
           delete transactionInfo.currentError;
           // retrieve events only for smart contract calls
           if (taquitoContract !== undefined) {
-            const eventSinkProperty =
-              abstractTransaction.blockchainSpecificParams?.eventSinkProperty ??
-              DEFAULT_EVENT_SINK_PROPERTY;
-            const eventSinkAddress = (
-              await taquitoContract.storage<ContractWithEventsStorage>()
-            )[eventSinkProperty];
             const currentBlock = await this.getBlock(blockNumber);
             const eventMappers =
               abstractTransaction.blockchainSpecificParams?.eventMappers;
@@ -737,7 +637,6 @@ export class TezosBlockchainDriver
               eventMappers !== undefined
                 ? this.blockToEvents(
                     currentBlock,
-                    eventSinkAddress,
                     abstractTransaction.to,
                     'allEvents',
                     eventMappers,
@@ -889,19 +788,8 @@ export class TezosBlockchainDriver
     const tezosToolkit = new TezosToolkit(this.nodeUrl);
 
     const taquitoConfig: SetProviderOptions['config'] = {
-      // ConfigConfirmation
-      confirmationPollingIntervalSecond:
-        config.confirmationPollingIntervalSecond,
       confirmationPollingTimeoutSecond: config.confirmationPollingTimeoutSecond,
       defaultConfirmationCount: config.defaultConfirmationCount,
-
-      // ConfigStreamer
-      streamerPollingIntervalMilliseconds:
-        config.pollingIntervalInSeconds * 1000,
-      shouldObservableSubscriptionRetry:
-        config.shouldObservableSubscriptionRetry,
-      observableSubscriptionRetryFunction:
-        config.observableSubscriptionRetryFunction,
     };
 
     tezosToolkit.setProvider({
@@ -909,6 +797,16 @@ export class TezosBlockchainDriver
       config: taquitoConfig,
       signer: new SignerToTaquitoSigner(this.params.signer),
     });
+
+    tezosToolkit.setStreamProvider(
+      tezosToolkit.getFactory(PollingSubscribeProvider)({
+        pollingIntervalMilliseconds: config.pollingIntervalInSeconds * 1000,
+        shouldObservableSubscriptionRetry:
+          config.shouldObservableSubscriptionRetry,
+        observableSubscriptionRetryFunction:
+          config.observableSubscriptionRetryFunction,
+      }),
+    );
 
     return tezosToolkit;
   }
