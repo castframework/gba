@@ -51,6 +51,7 @@ import {
   MichelsonMap,
   OpKind,
   SetProviderOptions,
+  TezosOperationError,
   TezosToolkit,
   TransactionOperation,
 } from '@taquito/taquito';
@@ -59,6 +60,7 @@ import {
   InternalOperationResult,
   OperationContentsAndResultTransaction,
 } from '@taquito/rpc';
+import { HttpResponseError, STATUS_CODE } from '@taquito/http-utils';
 import { flattenDeep } from 'lodash';
 import { evaluateFilter } from '@taquito/taquito/dist/lib/subscribe/filters';
 import { extractAddressFromPublicKey, mic2arr } from './utils';
@@ -82,7 +84,18 @@ export class TezosBlockchainDriver
 {
   // TODO : populate with corresponding taquito error messages
   private static NONCE_ERRORS = ['already used for contract'];
+  private static COUNTER_ERRORS_ID = [
+    // should we use the full id with the proto ?
+    '.counter_in_the_future',
+    '.counter_in_the_past',
+    '.tx_rollup_counter_overflow',
+    '.tx_rollup_operation_counter_mismatch',
+    '.tx_rollup_unknown_address_index',
+  ];
   private static CONNECTION_ERRORS = [];
+  private static HTTP_ERRORS_CODE: STATUS_CODE[] = [
+    504, 500, 507, 508, 408, 503, 429,
+  ];
 
   private logger: Logger = trashBinLogger;
   private tezosToolkit: TezosToolkit;
@@ -771,6 +784,8 @@ export class TezosBlockchainDriver
   }
 
   private isRetriable(error: any): boolean {
+    // Maybe we can only check the kind ?
+    // temporary seem pretty 'retryable'like
     return (
       error instanceof Error &&
       (this.isNonceIssue(error) || this.isConnectionIssue(error))
@@ -778,12 +793,23 @@ export class TezosBlockchainDriver
   }
 
   private isNonceIssue(error: Error): boolean {
+    if (error instanceof TezosOperationError) {
+      const tezosErrorId = error.id;
+
+      return TezosBlockchainDriver.COUNTER_ERRORS_ID.some((id) =>
+        tezosErrorId.includes(id),
+      );
+    }
+
     return TezosBlockchainDriver.NONCE_ERRORS.some((message) =>
       error.message.includes(message),
     );
   }
 
   private isConnectionIssue(error: Error): boolean {
+    if (error instanceof HttpResponseError) {
+      return TezosBlockchainDriver.HTTP_ERRORS_CODE.includes(error.status);
+    }
     return TezosBlockchainDriver.CONNECTION_ERRORS.some((message) =>
       error.message.includes(message),
     );
