@@ -848,7 +848,6 @@ export class EthereumBlockchainDriver
     try {
       const gas = await web3Transaction.estimateGas({
         from: signingAddress,
-        gas: 4000000,
       });
       return Math.ceil(gas * 1.3); // Magick value
     } catch (e) {
