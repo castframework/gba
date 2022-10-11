@@ -7,6 +7,7 @@
     "@taquito/rpc": "^10.2.1",
     "@taquito/signer": "^10.2.1",
     "@taquito/taquito": "^10.2.1",
+    "@taquito/http-utils": "14.0.0",
     "bignumber.js": "^9.0.1",
     "blakejs": "^1.1.1",
     "bs58check": "^2.1.2",
