@@ -1,3 +1,4 @@
+/* eslint-disable import/namespace */
 import * as fs from 'fs';
 import { PollingSubscribeProvider, TezosToolkit } from '@taquito/taquito';
 import { InMemorySigner } from '@taquito/signer';

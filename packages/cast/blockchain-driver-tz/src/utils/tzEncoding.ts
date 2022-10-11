@@ -1,3 +1,4 @@
+/* eslint-disable import/namespace */
 import * as bs58check from 'bs58check';
 import * as blake from 'blakejs';
 import BigNumber from 'bignumber.js';
