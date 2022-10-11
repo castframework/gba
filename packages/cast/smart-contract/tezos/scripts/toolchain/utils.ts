@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { TezosToolkit } from '@taquito/taquito';
+import { PollingSubscribeProvider, TezosToolkit } from '@taquito/taquito';
 import { InMemorySigner } from '@taquito/signer';
 import {
   ContractsConfig,
@@ -66,10 +66,14 @@ export async function getTezosToolkit(
     rpc: networkConfig.nodeConfig.host,
     signer: new InMemorySigner(networkConfig.keysConfig.admin),
     config: {
-      confirmationPollingIntervalSecond: 1,
       confirmationPollingTimeoutSecond: 3600,
     },
   });
+  toolkit.setStreamProvider(
+    toolkit.getFactory(PollingSubscribeProvider)({
+      pollingIntervalMilliseconds: 1000,
+    }),
+  );
 
   return toolkit;
 }

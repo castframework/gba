@@ -1,0 +1,60 @@
+[
+  {
+    "kind": "event",
+    "source": "KT1JxWuoXHoUSH7qNnRi8S5CqEha7YJrxWKk",
+    "nonce": 1,
+    "type": {
+      "prim": "pair",
+      "args": [
+        {
+          "prim": "string",
+          "annots": [
+            "%name"
+          ]
+        },
+        {
+          "prim": "pair",
+          "args": [
+            {
+              "prim": "nat",
+              "annots": [
+                "%hp"
+              ]
+            },
+            {
+              "prim": "int",
+              "annots": [
+                "%credit"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "tag": "Test",
+    "payload": {
+      "prim": "Pair",
+      "args": [
+        {
+          "string": "Bond"
+        },
+        {
+          "prim": "Pair",
+          "args": [
+            {
+              "int": "101"
+            },
+            {
+              "int": "-90"
+            }
+          ]
+        }
+      ]
+    },
+    "result": {
+      "status": "applied",
+      "consumed_milligas": "1000000"
+    },
+    "opHash": "op3v1BS9vA8QwmS2yssYUpDGT6rEx5bbPWX8ALYruMQBbQGAC9o"
+  }
+]

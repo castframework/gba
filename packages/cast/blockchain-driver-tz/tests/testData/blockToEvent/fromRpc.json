@@ -1,0 +1,312 @@
+{
+  "protocol": "PtKathmankSpLLDALzWw7CGD2j2MtyveTwboEYokqUCP4a1LxMg",
+  "chain_id": "NetXj4nRMnbBoxK",
+  "hash": "BMGEfRkP2hUjvzmy9kaB8p7iE6xfE5P2vaajErf6NMpuMz8FCQv",
+  "header": {
+    "level": 971,
+    "proto": 1,
+    "predecessor": "BMEnMARg5SPVoAVHD1KYBQBbJxFbsE1TksDC4kezQNuTXBuKrHW",
+    "timestamp": "2022-10-03T09:00:27Z",
+    "validation_pass": 4,
+    "operations_hash": "LLoZyk2fGJE5LaTnCktJPvkGQidSw1KgSDwzzfv9qKqpXPEiq8yqj",
+    "fitness": [
+      "02",
+      "000003cb",
+      "",
+      "ffffffff",
+      "00000000"
+    ],
+    "context": "CoW6y8bCqVBNK32vEv9YyDCasrgswxvmH6e353XY42d44aQVbwMp",
+    "payload_hash": "vh2UyUjBdwhg5DPNj4JU1Ah21zWXFMuj3YEDBtP9Gzoq7sKiBqew",
+    "payload_round": 0,
+    "proof_of_work_nonce": "1613998900000000",
+    "liquidity_baking_toggle_vote": "pass",
+    "signature": "sigRkkfay9hsUep9vqQPRXREdZG1cqWU73pwgfuhU5yHWcWfGV6G9gbjxKwZhTfJNDJL6FfjwHGscapWEXmgbZApwjkZj5CN"
+  },
+  "metadata": {
+    "protocol": "PtKathmankSpLLDALzWw7CGD2j2MtyveTwboEYokqUCP4a1LxMg",
+    "next_protocol": "PtKathmankSpLLDALzWw7CGD2j2MtyveTwboEYokqUCP4a1LxMg",
+    "test_chain_status": {
+      "status": "not_running"
+    },
+    "max_operations_ttl": 120,
+    "max_operation_data_length": 32768,
+    "max_block_header_length": 289,
+    "max_operation_list_length": [
+      {
+        "max_size": 4194304,
+        "max_op": 2048
+      },
+      {
+        "max_size": 32768
+      },
+      {
+        "max_size": 135168,
+        "max_op": 132
+      },
+      {
+        "max_size": 524288
+      }
+    ],
+    "proposer": "tz1YPSCGWXwBdTncK2aCctSZAXWvGsGwVJqU",
+    "baker": "tz1YPSCGWXwBdTncK2aCctSZAXWvGsGwVJqU",
+    "level_info": {
+      "level": 971,
+      "level_position": 970,
+      "cycle": 121,
+      "cycle_position": 2,
+      "expected_commitment": false
+    },
+    "voting_period_info": {
+      "voting_period": {
+        "index": 60,
+        "kind": "proposal",
+        "start_position": 960
+      },
+      "position": 10,
+      "remaining": 5
+    },
+    "nonce_hash": null,
+    "deactivated": [],
+    "balance_updates": [
+      {
+        "kind": "accumulator",
+        "category": "block fees",
+        "change": "-732",
+        "origin": "block"
+      },
+      {
+        "kind": "minted",
+        "category": "baking rewards",
+        "change": "-10000000",
+        "origin": "block"
+      },
+      {
+        "kind": "contract",
+        "contract": "tz1YPSCGWXwBdTncK2aCctSZAXWvGsGwVJqU",
+        "change": "10000732",
+        "origin": "block"
+      },
+      {
+        "kind": "minted",
+        "category": "baking bonuses",
+        "change": "-261446",
+        "origin": "block"
+      },
+      {
+        "kind": "contract",
+        "contract": "tz1YPSCGWXwBdTncK2aCctSZAXWvGsGwVJqU",
+        "change": "261446",
+        "origin": "block"
+      }
+    ],
+    "liquidity_baking_toggle_ema": 0,
+    "implicit_operations_results": [
+      {
+        "kind": "transaction",
+        "storage": [
+          {
+            "int": "1"
+          },
+          {
+            "int": "2425000100"
+          },
+          {
+            "int": "100"
+          },
+          {
+            "bytes": "01e927f00ef734dfc85919635e9afc9166c83ef9fc00"
+          },
+          {
+            "bytes": "0115eb0104481a6d7921160bc982c5e0a561cd8a3a00"
+          }
+        ],
+        "balance_updates": [
+          {
+            "kind": "minted",
+            "category": "subsidy",
+            "change": "-2500000",
+            "origin": "subsidy"
+          },
+          {
+            "kind": "contract",
+            "contract": "KT1TxqZ8QtKvLu3V3JH7Gx58n7Co8pgtpQU5",
+            "change": "2500000",
+            "origin": "subsidy"
+          }
+        ],
+        "consumed_milligas": "205006",
+        "storage_size": "4631"
+      }
+    ],
+    "consumed_milligas": "4306000"
+  },
+  "operations": [
+    [
+      {
+        "protocol": "PtKathmankSpLLDALzWw7CGD2j2MtyveTwboEYokqUCP4a1LxMg",
+        "chain_id": "NetXj4nRMnbBoxK",
+        "hash": "ooqWTHnJsfU7VR3Qhinj5dry4R9J5cqAYpGapdFKANkwnRMHdf9",
+        "branch": "BKwD5xYrpUrMHT5JrVQMDwfC7dNEjdbPjSs6mVhXC77csQ74fM6",
+        "contents": [
+          {
+            "kind": "endorsement",
+            "slot": 0,
+            "level": 970,
+            "round": 0,
+            "block_payload_hash": "vh1q3NHBcZLQM8o55X6xR2eHAWL24qiKjZYdf5xzCdwnsLbXCip4",
+            "metadata": {
+              "delegate": "tz1YPSCGWXwBdTncK2aCctSZAXWvGsGwVJqU",
+              "endorsement_power": 67
+            }
+          }
+        ],
+        "signature": "sigfYrphdXRJ4rjSsQGG91hGUi7PsThHxGBSjPfsN56d4ZbokCmpEHX9Zwty264XocfPYskpXdd6jKp746y3kzfsDsrDQYQf"
+      }
+    ],
+    [],
+    [],
+    [
+      {
+        "protocol": "PtKathmankSpLLDALzWw7CGD2j2MtyveTwboEYokqUCP4a1LxMg",
+        "chain_id": "NetXj4nRMnbBoxK",
+        "hash": "op3v1BS9vA8QwmS2yssYUpDGT6rEx5bbPWX8ALYruMQBbQGAC9o",
+        "branch": "BLwQ7yYRCbw5ghP7mzkSiR59XkLa1dLf3wV68HNED7CPG9cgd6z",
+        "contents": [
+          {
+            "kind": "transaction",
+            "source": "tz1VGfXxGVVcrx7PC4dUBDqbYfWRjuELtyw2",
+            "fee": "732",
+            "counter": "13",
+            "gas_limit": "4306",
+            "storage_limit": "0",
+            "amount": "0",
+            "destination": "KT1JxWuoXHoUSH7qNnRi8S5CqEha7YJrxWKk",
+            "parameters": {
+              "entrypoint": "default",
+              "value": {
+                "string": "Hello"
+              }
+            },
+            "metadata": {
+              "balance_updates": [
+                {
+                  "kind": "contract",
+                  "contract": "tz1VGfXxGVVcrx7PC4dUBDqbYfWRjuELtyw2",
+                  "change": "-732",
+                  "origin": "block"
+                },
+                {
+                  "kind": "accumulator",
+                  "category": "block fees",
+                  "change": "732",
+                  "origin": "block"
+                }
+              ],
+              "operation_result": {
+                "status": "applied",
+                "storage": {
+                  "prim": "Unit"
+                },
+                "consumed_milligas": "1205388",
+                "storage_size": "374"
+              },
+              "internal_operation_results": [
+                {
+                  "kind": "event",
+                  "source": "KT1JxWuoXHoUSH7qNnRi8S5CqEha7YJrxWKk",
+                  "nonce": 0,
+                  "type": {
+                    "prim": "address"
+                  },
+                  "tag": "ProductListed",
+                  "payload": {
+                    "bytes": "0000564e12b429e4ce4ac6433d3e22151b6198a0a6ff"
+                  },
+                  "result": {
+                    "status": "applied",
+                    "consumed_milligas": "1000000"
+                  }
+                },
+                {
+                  "kind": "event",
+                  "source": "KT1JxWuoXHoUSH7qNnRi8S5CqEha7YJrxWKk",
+                  "nonce": 1,
+                  "type": {
+                    "prim": "pair",
+                    "args": [
+                      {
+                        "prim": "string",
+                        "annots": [
+                          "%name"
+                        ]
+                      },
+                      {
+                        "prim": "pair",
+                        "args": [
+                          {
+                            "prim": "nat",
+                            "annots": [
+                              "%hp"
+                            ]
+                          },
+                          {
+                            "prim": "int",
+                            "annots": [
+                              "%credit"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "tag": "Test",
+                  "payload": {
+                    "prim": "Pair",
+                    "args": [
+                      {
+                        "string": "Bond"
+                      },
+                      {
+                        "prim": "Pair",
+                        "args": [
+                          {
+                            "int": "101"
+                          },
+                          {
+                            "int": "-90"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "result": {
+                    "status": "applied",
+                    "consumed_milligas": "1000000"
+                  }
+                },
+                {
+                  "kind": "event",
+                  "source": "KT1JxWuoXHoUSH7qNnRi8S5CqEha7YJrxWKk",
+                  "nonce": 2,
+                  "type": {
+                    "prim": "string"
+                  },
+                  "tag": "Rethrow",
+                  "payload": {
+                    "string": "Hello"
+                  },
+                  "result": {
+                    "status": "applied",
+                    "consumed_milligas": "1000000"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "signature": "sigNDyzHVh9LsVRTzbhpFUUpjJSQsV673SmbJcCrccohJnRMPQtRrwqF7uCJ8ocoAwunFQGnzYbm9d6uTrQphGb2Wi9Ei2pY"
+      }
+    ]
+  ]
+}
