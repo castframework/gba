@@ -60,18 +60,20 @@ export const takeOperationContentToAddressWithInternalOp = (
   });
 
 export const takeEvent = <EventType extends Event<string>>(
+  sourceContract: EventType['smartContractAddress'],
   eventNameFilter?: EventType['eventName'],
 ) =>
   R.filter<InternalOperationResult>((ior) => {
     const eventName = ior?.tag;
     const isKindEvent = ior.kind === OpKind.EVENT;
+    const isFromRelevantSource = ior.source === sourceContract;
 
     const hasRelevantName =
       eventNameFilter === undefined ||
       eventNameFilter === eventName ||
       eventNameFilter === 'allEvents';
 
-    return isKindEvent && hasRelevantName;
+    return isKindEvent && hasRelevantName && isFromRelevantSource;
   });
 
 export const formatEvent = (
