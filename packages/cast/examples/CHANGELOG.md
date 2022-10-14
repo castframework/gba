@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0-alpha.5 (2022-10-14)
+
+
+### Bug Fixes
+
+* fix tezos driver unit tests ([95d165f](https://github.com/castframework/gba/commit/95d165f3ca2e4aa17b349d342ebed36f0cab7319))
+
+
+
+
+
 # 1.1.0-alpha.4 (2022-10-11)
 
 **Note:** Version bump only for package @castframework/examples
