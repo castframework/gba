@@ -478,7 +478,9 @@ export class TezosBlockchainDriver
     const blockNumber = block.header.level;
     const blockHash = block.hash;
 
-    this.logger.trace(`Handling block [${blockNumber}:${blockHash}] `);
+    this.logger.trace(
+      `Handling block [${blockNumber}:${blockHash}] for [${smartContractAddress}:${eventNameFilter}]`,
+    );
 
     const specificOpHashFilter = R.filter(
       (operation: OperationEntry) =>
@@ -492,13 +494,17 @@ export class TezosBlockchainDriver
       getAllContentsAddOpHash,
       takeOperationContentToAddressWithInternalOp(smartContractAddress),
       getAllInternalOperationAddOpHash,
-      takeEvent(eventNameFilter),
+      takeEvent(smartContractAddress, eventNameFilter),
       formatEvent(smartContractAddress, blockNumber, blockHash, eventMappers),
     )(block.operations);
 
-    this.logger.info(
-      `For Event [${eventNameFilter}] In block [${blockNumber}:${blockHash}] found : ${events}`,
-    );
+    if (events) {
+      this.logger.trace(
+        `For Event [${eventNameFilter}] In block [${blockNumber}:${blockHash}] found : ${JSON.stringify(
+          events,
+        )}`,
+      );
+    }
 
     return events as EventType[];
   }
