@@ -57,7 +57,10 @@ describe('blockToEvent', () => {
   });
 
   it('should get only the events', () => {
-    const result = takeEvent('Test')(internalOp as []);
+    const result = takeEvent(
+      'KT1JxWuoXHoUSH7qNnRi8S5CqEha7YJrxWKk',
+      'Test',
+    )(internalOp as []);
     expect(result).to.be.eql(event_Test);
   });
 
@@ -107,7 +110,7 @@ describe('blockToEvent', () => {
         'KT1JxWuoXHoUSH7qNnRi8S5CqEha7YJrxWKk',
       ),
       getAllInternalOperationAddOpHash,
-      takeEvent('Test'),
+      takeEvent('KT1JxWuoXHoUSH7qNnRi8S5CqEha7YJrxWKk', 'Test'),
       formatEvent('KT1JxWuoXHoUSH7qNnRi8S5CqEha7YJrxWKk', 0, 'hash', mapper),
     )(operations as OperationEntry[]);
 
