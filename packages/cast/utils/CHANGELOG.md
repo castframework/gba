@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0-alpha.6 (2022-10-17)
+
+
+### Bug Fixes
+
+* remove references to eventSink + fix handling of event parameters ([6daa451](https://github.com/castframework/gba/commit/6daa451966a57ef39849ae423579de61769b5288))
+
+
+
+
+
 # 1.1.0-alpha.5 (2022-10-14)
 
 
