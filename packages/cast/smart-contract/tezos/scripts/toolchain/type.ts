@@ -16,16 +16,9 @@ export type FlexTesaAccount = {
   privateKey: TezosKey;
 };
 
-export type EnvironmentConfig = {
-  factoryAddress: TezosAddress;
-  eventSinkContractAddress: TezosAddress;
-  builderContractAddress: TezosAddress;
-};
-
 export type ContractsConfig = { [contractName: string]: string };
 export type KeysConfig = {
   admin: TezosKey;
-  registrar: TezosKey;
   [accountName: string]: TezosKey;
 };
 export type NodeConfig = { host: string };

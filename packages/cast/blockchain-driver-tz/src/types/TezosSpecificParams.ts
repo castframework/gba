@@ -16,7 +16,6 @@ export type EventMapper<MethodParamTypes extends Array<unknown>, EventType> = (
 export type EventMappers = Record<string, EventMapper<unknown[], unknown>>;
 
 export class TezosSpecificParams {
-  eventSinkProperty?: string;
   viewMappers?: ViewMappers<unknown>;
   eventMappers?: EventMappers;
 }

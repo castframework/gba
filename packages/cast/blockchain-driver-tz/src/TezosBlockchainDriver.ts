@@ -70,9 +70,6 @@ import {
   takeEvent,
   takeOperationContentToAddressWithInternalOp,
 } from './rpcParser';
-export interface ContractWithEventsStorage {
-  eventSinkContractAddress: string;
-}
 
 export { Logger } from 'log4js';
 
