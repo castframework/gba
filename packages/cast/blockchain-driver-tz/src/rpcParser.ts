@@ -12,7 +12,6 @@ import { mic2arr } from './utils';
 import * as R from 'ramda';
 import { Filter } from '@taquito/taquito';
 import { EventMappers } from './types';
-import { flattenDeep } from 'lodash';
 
 type WithOpHash = { opHash: string };
 
@@ -99,9 +98,7 @@ export const formatEvent = (
 
     const payload = eventMappers?.[eventName](
       eventName,
-      Array.isArray(eventPayload)
-        ? flattenDeep<any>(eventPayload)
-        : [eventPayload],
+      Array.isArray(eventPayload) ? R.flatten(eventPayload) : [eventPayload],
     );
 
     return {
