@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0-alpha.7 (2022-10-18)
+
+
+### Bug Fixes
+
+* use R.flatten rather than lodashs ([33ce9c4](https://github.com/castframework/gba/commit/33ce9c4d599570441aa6f138343b12fc60a444b3))
+
+
+
+
+
 # 1.1.0-alpha.6 (2022-10-17)
 
 
