@@ -5,6 +5,7 @@ import {
 } from '@castframework/blockchain-driver-eth';
 import { first } from 'rxjs/operators';
 import { getLogger } from 'log4js';
+import * as log4js from 'log4js';
 
 import { TransactionManager } from '@castframework/transaction-manager';
 import { getAbi } from './blockchainSpecific';
@@ -15,7 +16,24 @@ import {
   getEthNodeUrl,
   getEthPrivateKey,
 } from './helpers';
-import { wait } from '@castframework/blockchain-driver-tz';
+
+log4js.configure({
+  appenders: {
+    console: {
+      type: 'console',
+      layout: {
+        type: 'pattern',
+        pattern: '%d{yyyy/MM/dd hh:mm:ss.SSS} %p %c %m',
+      },
+    },
+  },
+  categories: {
+    default: {
+      appenders: ['console'],
+      level: 'trace',
+    },
+  },
+});
 
 describe('ERC20', () => {
   let driver: EthereumBlockchainDriver;
@@ -25,7 +43,7 @@ describe('ERC20', () => {
 
     driver = new EthereumBlockchainDriver({
       config: {
-        eventDelayInBlocks: 0,
+        eventDelayInBlocks: 0
       },
       signer: new PrivateKeySigner(getEthPrivateKey('example1')),
       nodeURL: getEthNodeUrl(),
@@ -47,13 +65,13 @@ describe('ERC20', () => {
       ContractType.ERC20,
     );
     const tokenToTransfer = 1;
-    const publicKey2 = getEthAddress(getEthPrivateKey('2'));
-    const publicKey3 = getEthAddress(getEthPrivateKey('2'));
+    const address2 = getEthAddress(getEthPrivateKey('2'));
+    const address3 = getEthAddress(getEthPrivateKey('2'));
 
     /// Call balanceOf
     const balanceOfBefore: string = await transactionManager.call({
       methodName: 'balanceOf',
-      methodParameters: [publicKey2],
+      methodParameters: [address2],
       to: ExampleERC20Address,
       blockchainSpecificParams: {
         abi,
@@ -79,7 +97,7 @@ describe('ERC20', () => {
     // Send transfer
     const txHashPromise = transactionManager.send({
       methodName: 'transfer',
-      methodParameters: [publicKey2, tokenToTransfer],
+      methodParameters: [address2, tokenToTransfer],
       to: ExampleERC20Address,
       blockchainSpecificParams: {
         abi,
@@ -98,15 +116,20 @@ describe('ERC20', () => {
       await transactionManager.getTransactionInfo(txHash.transactionId);
     expect(getTransactionInfoResult.id).to.be.equal(txHash.transactionId);
     expect(getTransactionInfoResult.status).to.be.equal('CONFIRMED');
-    expect(getTransactionInfoResult.details.methodName).to.be.equal('transfer');
-    expect(getTransactionInfoResult.details.to).to.be.equal(
+    expect(getTransactionInfoResult.details?.methodName).to.be.equal('transfer');
+    expect(getTransactionInfoResult.details?.to).to.be.equal(
       ExampleERC20Address,
     );
+
+    expect(getTransactionInfoResult.blockchainSpecificTransactionInfo?.baseFeePerGas).not.to.be.undefined;
+    expect(getTransactionInfoResult.blockchainSpecificTransactionInfo?.maxFeePerGas).not.to.be.undefined;
+    expect(getTransactionInfoResult.blockchainSpecificTransactionInfo?.maxPriorityFeePerGas).to.equal(3500000000);
+    expect(getTransactionInfoResult.blockchainSpecificTransactionInfo?.type).to.equal('0x2');
     expect(getTransactionInfoResult.emittedEvents).to.not.be.undefined;
 
     await transactionManager.send({
       methodName: 'transfer',
-      methodParameters: [publicKey3, tokenToTransfer],
+      methodParameters: [address3, tokenToTransfer],
       to: ExampleERC20Address,
       blockchainSpecificParams: {
         abi,
@@ -126,7 +149,7 @@ describe('ERC20', () => {
 
     const balanceOfafter: string = await transactionManager.call({
       methodName: 'balanceOf',
-      methodParameters: [publicKey2],
+      methodParameters: [address2],
       to: ExampleERC20Address,
       blockchainSpecificParams: {
         abi,

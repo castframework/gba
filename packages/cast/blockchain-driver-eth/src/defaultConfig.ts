@@ -22,4 +22,6 @@ export const defaultConfig: Required<
   routineCallLoggingPeriod: 0,
   transactionInfoProviderFactory:
     new EthereumNodeTransactionInfoProviderFactory(),
+  useEIP1559: true,
+  priorityFeeInGwei: 3.5
 };
