@@ -5,6 +5,7 @@ import {
   TransactionInfoProvider,
   TransactionStatus,
 } from '@castframework/types';
+import { formatParameter } from '../../utils/formatParameters';
 import { EthereumSpecificParams } from '../..';
 import { EthereumBlockchainDriver } from '../../EthereumBlockchainDriver';
 import { EthereumSpecificTransactionInfo } from '../../types/EthereumSpecificTransactionInfo';
@@ -34,6 +35,10 @@ export class EthereumNodeTransactionInfoProvider
       );
       return undefined;
     }
+
+    const maxFeePerGas: number | undefined = formatParameter(transaction.maxFeePerGas);
+    const maxPriorityFeePerGas: number | undefined = formatParameter(transaction.maxPriorityFeePerGas);
+
     // pending transaction
     if (transaction.blockNumber === null) {
       const transactionInfo: TransactionInfo<
@@ -47,6 +52,8 @@ export class EthereumNodeTransactionInfoProvider
         blockchainSpecificTransactionInfo: {
           gasPrice: Number.parseInt(transaction.gasPrice),
           gasLimit: transaction.gas,
+          maxFeePerGas,
+          maxPriorityFeePerGas
         },
       };
       this.logger.trace(
@@ -56,6 +63,10 @@ export class EthereumNodeTransactionInfoProvider
       );
       return transactionInfo;
     }
+
+    const web3 = this.driver.getWeb3();
+    const baseFeePerGas: number | undefined = (await web3.eth.getBlock(transaction.blockNumber)).baseFeePerGas;
+
     // transaction is included in the blockchain
     const transactionInfo: TransactionInfo<
       EthereumSpecificTransactionInfo,
@@ -69,6 +80,9 @@ export class EthereumNodeTransactionInfoProvider
       blockchainSpecificTransactionInfo: {
         gasPrice: Number.parseInt(transaction.gasPrice),
         gasLimit: transaction.gas,
+        baseFeePerGas,
+        maxFeePerGas,
+        maxPriorityFeePerGas,
       },
     };
     this.logger.trace(

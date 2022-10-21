@@ -48,6 +48,8 @@ const driver = new EthereumBlockchainDriver({
 | `config.transactionBoostFactor` | number | TODO description |  1.2 |
 | `config.routineCallLoggingPeriod` | number | TODO description |  0 |
 | `config.transactionInfoProviderFactory` | TransactionInfoProviderFactory\<EthereumBlockchainDriver\> | TODO description |  0 |
+| `config.useEIP1559` | boolean | flag to signal use of maxPriorityFeePerGas, otherwise gasPrice will be used | true |
+| `config.priorityFeeInGWei` | number | for EIP1559 use, the value for maxPriorityFeePerGas | 3.5 |
 
 ## Example
 
@@ -57,5 +59,7 @@ import { EthereumConfig } from '@castframework/blockchain-driver-eth';
 const config: EthereumConfig = {
   numberOfConfirmation: 5,
   eventDelayInBlocks: 5,
+  useEIP1559: true,
+  priorityFeeInGWei: 3.5
 }
 ```

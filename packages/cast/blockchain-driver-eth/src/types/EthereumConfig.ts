@@ -20,4 +20,6 @@ export type EthereumConfig = {
     */
   routineCallLoggingPeriod?: number;
   transactionInfoProviderFactory?: TransactionInfoProviderFactory<EthereumBlockchainDriver>;
+  useEIP1559?: boolean;
+  priorityFeeInGwei?: number;
 };
