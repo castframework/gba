@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0-alpha.8 (2022-10-24)
+
+
+### Bug Fixes
+
+* pin @types/keyv to last working version ([d134dc8](https://github.com/castframework/gba/commit/d134dc814b254eb7a37758ac244c3b2565f2c253))
+
+
+
+
+
 # 1.1.0-alpha.7 (2022-10-18)
 
 
