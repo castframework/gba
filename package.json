@@ -104,6 +104,9 @@
     "ts-node": "^9.0.0",
     "typechain": "5.2.0"
   },
+  "overrides": {
+    "@types/keyv": "3.1.4"
+  },
   "husky": {
     "hooks": {
       "commit-msg": "$(npm bin)/commitlint -E HUSKY_GIT_PARAMS",
