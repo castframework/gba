@@ -2,8 +2,8 @@
   "author": "Cast Framework",
   "description": "Interface with the blockchain",
   "dependencies": {
-    "@castframework/types": "^1.1.0-alpha.8",
-    "@castframework/utils": "^1.1.0-alpha.8",
+    "@castframework/types": "^1.1.0-alpha.9",
+    "@castframework/utils": "^1.1.0-alpha.9",
     "@taquito/http-utils": "14.0.0",
     "@taquito/rpc": "14.0.0",
     "@taquito/signer": "14.0.0",
@@ -83,5 +83,5 @@
     "*.ts": "eslint --ignore-path .gitignore --quiet"
   },
   "types": "dist/index.d.ts",
-  "version": "1.1.0-alpha.8"
+  "version": "1.1.0-alpha.9"
 }
