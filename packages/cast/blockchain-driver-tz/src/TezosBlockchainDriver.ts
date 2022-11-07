@@ -47,7 +47,6 @@ import {
 import {
   ContractAbstraction,
   ContractProvider,
-  MichelsonMap,
   PollingSubscribeProvider,
   SetProviderOptions,
   TezosOperationError,
@@ -57,7 +56,6 @@ import {
 import { BlockResponse, OperationEntry } from '@taquito/rpc';
 import { HttpResponseError, STATUS_CODE } from '@taquito/http-utils';
 import { extractAddressFromPublicKey } from './utils';
-import { BigNumber } from 'bignumber.js';
 import { SignerToTaquitoSigner } from './signer';
 import { waitFor } from './utils/promiseUtils';
 import { errorAsString, getTezosErrorMessage } from './utils/errorAsString';
@@ -563,13 +561,18 @@ export class TezosBlockchainDriver
             `Contract at address ${taquitoContract.address} does not have a method named ${methodName}`,
           );
         }
-        const tezosParameters = this.buildTezosParameters(methodParameters);
+
+        const contractSignature =
+          taquitoContract.methodsObject[methodName]().getSignature();
+        const tezosParameters = this.buildTezosParameters(
+          methodParameters,
+          contractSignature,
+        );
         this.logger.trace(
           `Send with tezos parameters ${JSON.stringify(tezosParameters)}`,
         );
-        const contractMethod = taquitoContract.methods[methodName](
-          ...tezosParameters,
-        ); // Better unknown than any
+        const contractMethod =
+          taquitoContract.methodsObject[methodName](tezosParameters); // Better unknown than any
 
         try {
           transactionOperation = await contractMethod.send();
@@ -716,68 +719,23 @@ export class TezosBlockchainDriver
       error.message.includes(message),
     );
   }
-  private isArrayContainNoPrimitiveType(parameters: any[]): boolean {
-    const primitiveTypes = [
-      'number',
-      'string',
-      'boolean',
-      'bigint',
-      'symbol',
-      'undefined',
-      'null',
-    ];
-    for (const element of parameters) {
-      if (!primitiveTypes.includes(typeof element)) {
-        return true;
-      }
+
+  private buildTezosParameters(
+    methodParameters: any[],
+    methodSignature: { [key: string]: any },
+  ): any {
+    const signatureKeys = Object.keys(methodSignature);
+
+    if (methodParameters.length === 1) {
+      return methodParameters[0];
+    } else {
+      return signatureKeys.reduce((acc, key, index) => {
+        return {
+          ...acc,
+          [key]: methodParameters[index],
+        };
+      }, {});
     }
-    return false;
-  }
-  private buildTezosParameters(methodParameters: any[]): any {
-    let parameters: any[] = [];
-
-    for (const parameter of methodParameters) {
-      switch (typeof parameter) {
-        case 'number':
-        case 'bigint':
-        case 'boolean':
-        case 'string':
-          parameters.push(parameter);
-          break;
-
-        case 'object':
-          if (BigNumber.isBigNumber(parameter)) {
-            parameters.push(parameter.toFixed());
-            break;
-          }
-
-          if (MichelsonMap.isMichelsonMap(parameter)) {
-            parameters.push(parameter);
-            break;
-          }
-
-          if (Array.isArray(parameter)) {
-            if (this.isArrayContainNoPrimitiveType(parameter))
-              parameters = [
-                ...parameters,
-                ...this.buildTezosParameters(parameter as any[]),
-              ];
-            else parameters.push(parameter);
-            break;
-          }
-
-          parameters = [
-            ...parameters,
-            ...this.buildTezosParameters(Object.values(parameter)),
-          ];
-          break;
-
-        default:
-          throw new Error(`Unrecognized parameter type: ${typeof parameter}`);
-      }
-    }
-
-    return parameters;
   }
 
   public async close(): Promise<void> {
