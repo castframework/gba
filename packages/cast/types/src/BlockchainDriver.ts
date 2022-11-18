@@ -117,7 +117,7 @@ export type TransactionId = string;
 
 export interface Signer<TxType, SignedTxType> {
   sign: (transaction: TxType) => Promise<SignedTxType>;
-  getPublicKey(): string;
+  getPublicKey(): Promise<string>;
 }
 
 export interface BlockchainDriverParams<TxType, SignedTxType, ConfigType> {

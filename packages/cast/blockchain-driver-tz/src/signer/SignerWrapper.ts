@@ -11,7 +11,7 @@ export class SignerToTaquitoSigner implements Signer {
   }
 
   async publicKeyHash(): Promise<string> {
-    return extractAddressFromPublicKey(this.signer.getPublicKey());
+    return extractAddressFromPublicKey(await this.signer.getPublicKey());
   }
 
   async secretKey(): Promise<string | undefined> {
