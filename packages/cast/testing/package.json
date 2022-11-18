@@ -64,13 +64,13 @@
   "scripts": {
     "build": "npm run clean && npm run compile",
     "build:link": "npm run build && cd dist && npm link",
-    "clean": "$(npm bin)/rimraf dist/* tsconfig.tsbuildinfo",
-    "compile": "$(npm bin)/tsc -b",
+    "clean": "npx --no rimraf dist/* tsconfig.tsbuildinfo",
+    "compile": "npx --no tsc -b",
     "lint": "eslint --ignore-path .gitignore --ext ts .",
     "lint:fix": "eslint --fix --ignore-path .gitignore --ext ts .",
     "prepublishOnly": "npm run build",
-    "sonar": "$(npm bin)/sonar-scanner",
-    "test:integration": "NETWORK_FOLDER=../../../networks/local $(npm bin)/ts-mocha --exit tests/**/*.spec.ts",
+    "sonar": "npx --no sonar-scanner",
+    "test:integration": "NETWORK_FOLDER=../../../networks/local npx --no ts-mocha --exit tests/**/*.spec.ts",
     "stats:integration": "nyc npm run test:integration",
     "pre-commit": "lint-staged --verbose"
   },

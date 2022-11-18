@@ -64,12 +64,12 @@
   "scripts": {
     "build": "npm run clean && npm run compile",
     "build:link": "npm run build && cd dist && npm link",
-    "clean": "$(npm bin)/rimraf dist/* tsconfig.tsbuildinfo",
-    "compile": "$(npm bin)/tsc -b",
+    "clean": "npx --no rimraf dist/* tsconfig.tsbuildinfo",
+    "compile": "npx --no tsc -b",
     "lint": "eslint --ignore-path .gitignore --ext ts .",
     "lint:fix": "eslint --fix --ignore-path .gitignore --ext ts .",
     "prepublishOnly": "npm run build",
-    "sonar": "$(npm bin)/sonar-scanner",
+    "sonar": "npx --no sonar-scanner",
     "exampleTezos": "NETWORK_FOLDER=../../../networks/local BLOCKCHAIN=tezos ts-node src/examples/exampleTezos.ts",
     "exampleEthereum": "NETWORK_FOLDER=../../../networks/local BLOCKCHAIN=ethereum ts-node src/examples/exampleEthereum.ts",
     "pre-commit": "lint-staged --verbose"

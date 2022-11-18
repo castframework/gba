@@ -58,13 +58,13 @@
   "scripts": {
     "build": "npm run clean && npm run compile",
     "build:link": "npm run build && cd dist && npm link",
-    "clean": "$(npm bin)/rimraf dist/* tsconfig.tsbuildinfo",
-    "compile": "$(npm bin)/tsc -b",
+    "clean": "npx --no rimraf dist/* tsconfig.tsbuildinfo",
+    "compile": "npx --no tsc -b",
     "lint": "eslint --ignore-path .gitignore --ext ts .",
     "lint:fix": "eslint --fix --ignore-path .gitignore --ext ts .",
-    "sonar": "$(npm bin)/sonar-scanner",
+    "sonar": "npx --no sonar-scanner",
     "stats": "nyc npm run test",
-    "test": "$(npm bin)/ts-mocha tests/**/*.spec.ts",
+    "test": "npx --no ts-mocha tests/**/*.spec.ts",
     "pre-commit": "lint-staged --verbose"
   },
   "lint-staged": {

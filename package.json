@@ -109,14 +109,14 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "$(npm bin)/commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "$(npm bin)/lerna run --concurrency 1 pre-commit"
+      "commit-msg": "npx --no commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "npx --no lerna run --concurrency 1 pre-commit"
     }
   },
   "name": "root",
   "private": true,
   "scripts": {
-    "commit": "npx git-cz"
+    "commit": "npx --no git-cz"
   },
   "engines": {
     "npm": "^7.24.0"

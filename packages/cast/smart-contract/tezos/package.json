@@ -36,7 +36,7 @@
     "build": "npm run build:ts && npm run build:tez",
     "build:ts": "tsc --noEmit",
     "build:tez": "./scripts/toolchain/cli/compile.ts",
-    "build:tez:watch": "$(npm bin)/nodemon --config build_watch.json",
+    "build:tez:watch": "npx --no nodemon --config build_watch.json",
     "lint:ts": "eslint --ignore-path .gitignore --ext ts .",
     "lint": "npm run lint:ts",
     "clean": "rm -r src/*/dist ; rm -r src/*/__pycache__ ",
