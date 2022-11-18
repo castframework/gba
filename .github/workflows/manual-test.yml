@@ -1,5 +1,12 @@
 name: Manual Test
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'     
+        required: false
+        default: false
 
 jobs:
   tests:
@@ -10,6 +17,9 @@ jobs:
         node: ["16"]
         architecture: ["x64"]
     steps:
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
       - name: Checkout
         uses: actions/checkout@v2
 
