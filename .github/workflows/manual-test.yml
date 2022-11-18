@@ -17,9 +17,6 @@ jobs:
         node: ["16"]
         architecture: ["x64"]
     steps:
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -45,29 +42,9 @@ jobs:
       - name: Test
         run: |
           lerna run stats
-      - name: Upload code coverage
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./reports/coverage/ut-transaction-manager/cobertura-coverage.xml,./reports/coverage/ut-blockchain-driver-eth/cobertura-coverage.xml,./reports/coverage/ut-blockchain-driver-tz/cobertura-coverage.xml,./reports/coverage/ut-types/cobertura-coverage.xml,./reports/coverage/ut-utils/cobertura-coverage.xml
-          flags: unit
-          name: codecov-umbrella
-          verbose: true
-        if: ${{ matrix.node == '16' && matrix.architecture == 'x64' }}
-
-      - name: Authenticate with Registry
-        run: |
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-          npm whoami
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        if: ${{ matrix.node == '16' && matrix.architecture == 'x64' }}
-
-      - name: Setup git
-        run: |
-          git config --global user.email "ci@github.com"
-          git config --global user.name "CI"
-        if: ${{ matrix.node == '16' && matrix.architecture == 'x64' }}
+      - name: Setup tmate session
+        if: ${{ failure() && github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+        uses: mxschmitt/action-tmate@v3
 
   integration-tests:
     name: Integration tests (Node ${{ matrix.node }}, ${{ matrix.architecture }})
@@ -109,14 +86,10 @@ jobs:
       - name: Integration tests
         run: |
           lerna run stats:integration
-      - name: Upload code coverage
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./reports/coverage/it-testing/cobertura-coverage.xml
-          flags: integration
-          name: codecov-umbrella
-          verbose: true
 
       - name: Stop blockchains
         run: docker-compose down
+        
+      - name: Setup tmate session
+        if: ${{ failure() && github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+        uses: mxschmitt/action-tmate@v3
