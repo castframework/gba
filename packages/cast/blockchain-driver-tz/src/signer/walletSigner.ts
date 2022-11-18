@@ -17,7 +17,7 @@ export class PrivateKeySigner implements Signer<TezosTx, TezosSignedTx> {
     );
   }
 
-  public getPublicKey(): string {
+  public async getPublicKey(): Promise<string> {
     return extractPublicKeyFromSecret(this.privateKey);
   }
 

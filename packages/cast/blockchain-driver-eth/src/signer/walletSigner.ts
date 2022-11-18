@@ -30,7 +30,7 @@ export class PrivateKeySigner implements Signer<EthereumTx, EthereumSignedTx> {
     }
   }
 
-  public getPublicKey(): string {
+  public async getPublicKey(): Promise<string> {
     return addHexPrefix(
       bufferToHex(privateToPublic(toBuffer(this.privateKey))),
     );

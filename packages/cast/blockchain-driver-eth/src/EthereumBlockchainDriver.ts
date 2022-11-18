@@ -1096,7 +1096,7 @@ export class EthereumBlockchainDriver
   }
 
   public async getAddress(): Promise<string> {
-    const pk = this.params.signer.getPublicKey();
+    const pk = await this.params.signer.getPublicKey();
     const address = addHexPrefix(bufferToHex(publicToAddress(toBuffer(pk))));
     return address;
   }

@@ -31,7 +31,7 @@ describe('blockToEvent', () => {
           prefixSig: '',
           sbytes: '',
         }),
-      getPublicKey: () => '',
+      getPublicKey: () => Promise.resolve(''),
     },
     nodeURL: '',
     config: {
