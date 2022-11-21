@@ -442,7 +442,9 @@ export class TezosBlockchainDriver
           );
 
     const blocksFromLevel$ = latestLevel$.pipe(
-      switchMap((lastLevel) => range(fromLevel, lastLevel)),
+      switchMap((lastLevel) =>
+        range(fromLevel, Math.max(lastLevel - fromLevel, 1)),
+      ),
       switchMap((wantedBlockLevel) => this.getBlock(wantedBlockLevel)),
     );
 
