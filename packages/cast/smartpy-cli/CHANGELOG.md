@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0-alpha.11 (2022-11-21)
+
+
+### Bug Fixes
+
+* blockFrom range generation ([#19](https://github.com/castframework/gba/issues/19)) ([e8adb57](https://github.com/castframework/gba/commit/e8adb5725647826dc78211c781a9e0a310bdc642))
+
+
+
+
+
 # 1.1.0-alpha.10 (2022-11-21)
 
 **Note:** Version bump only for package @castframework/smartpy-cli
