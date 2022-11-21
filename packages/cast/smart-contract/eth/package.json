@@ -59,7 +59,7 @@
     "coverage:report": "npm run coverage && open coverage/index.html ",
     "coverage": "./node_modules/.bin/solidity-coverage",
     "deploy": "npx --no truffle migrate --network default --reset",
-    "extract:abi": "mkdir -p abi; for file in build/contracts/*.json ; do npx --no jqn --color=false 'property(\"abi\")' < $file > abi/$(basename $file) ; done",
+    "extract:abi": "mkdir -p abi; for file in build/contracts/*.json ; do npx --no jqn -c=false 'property(\"abi\")' < $file > abi/$(basename $file) ; done",
     "extract:last-deploy": "node ./extract-last-deploy-address-from-artifacts.js",
     "lint:sol": "solhint -f table {src,contracts}/**/*.sol",
     "lint:ts": "eslint --ignore-path .gitignore --ext ts .",
