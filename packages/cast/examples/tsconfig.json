@@ -27,8 +27,7 @@
     "dist"
   ],
   "include": [
-    "src/**/*.ts",
-    "src/**/*.json"
+    "src/**/*"
   ],
   "references": [
     {
