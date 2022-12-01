@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0-alpha.12 (2022-12-01)
+
+
+### Bug Fixes
+
+* fix type ([05b011d](https://github.com/castframework/gba/commit/05b011d1ad8c573219b58a39894f904f36ef3ca7))
+
+
+
+
+
 # 1.1.0-alpha.11 (2022-11-21)
 
 
