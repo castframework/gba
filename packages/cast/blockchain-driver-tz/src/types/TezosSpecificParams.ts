@@ -8,12 +8,12 @@ export type ViewMappers<StorageType> = Record<
   ViewMapper<StorageType, unknown>
 >;
 
-export type EventMapper<MethodParamTypes extends Array<unknown>, EventType> = (
+export type EventMapper<EventType> = (
   method: string,
-  methodParameters: MethodParamTypes,
+  methodParameters: unknown,
 ) => EventType;
 
-export type EventMappers = Record<string, EventMapper<unknown[], unknown>>;
+export type EventMappers = Record<string, EventMapper<unknown>>;
 
 export class TezosSpecificParams {
   viewMappers?: ViewMappers<unknown>;
