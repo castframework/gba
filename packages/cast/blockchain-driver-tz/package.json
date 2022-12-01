@@ -8,6 +8,7 @@
     "@taquito/rpc": "14.0.0",
     "@taquito/signer": "14.0.0",
     "@taquito/taquito": "14.0.0",
+    "@taquito/michelson-encoder": "14.0.0",
     "bignumber.js": "^9.0.1",
     "blakejs": "^1.1.1",
     "bs58check": "^2.1.2",

@@ -8,7 +8,7 @@ import {
   OpKind,
 } from '@taquito/rpc';
 import { evaluateFilter } from '@taquito/taquito/dist/lib/subscribe/filters';
-import { mic2arr } from './utils';
+import { Schema } from '@taquito/michelson-encoder';
 import * as R from 'ramda';
 import { Filter } from '@taquito/taquito';
 import { EventMappers } from './types';
@@ -76,6 +76,14 @@ export const takeEvent = <EventType extends Event<string>>(
     return isKindEvent && hasRelevantName && isFromRelevantSource;
   });
 
+export function getPOJOFromEvent(event: InternalOperationResult): unknown {
+  const { type, payload } = event;
+
+  const storageSchema = new Schema(type!);
+
+  return storageSchema.Execute(payload);
+}
+
 export const formatEvent = (
   smartContractAddress: string,
   blockNumber: number,
@@ -84,7 +92,7 @@ export const formatEvent = (
 ) =>
   R.map((ior: InternalOperationResult & WithOpHash): Event<string> => {
     const eventName = ior.tag;
-    const eventPayload = mic2arr(ior.payload);
+    const eventPayload = getPOJOFromEvent(ior); //mic2arr(ior.payload);
 
     if (eventName === undefined) {
       throw new Error(
@@ -96,10 +104,7 @@ export const formatEvent = (
       throw new Error(`No event mapper for event ${eventName}`);
     }
 
-    const payload = eventMappers?.[eventName](
-      eventName,
-      Array.isArray(eventPayload) ? R.flatten(eventPayload) : [eventPayload],
-    );
+    const payload = eventMappers?.[eventName](eventName, eventPayload);
 
     return {
       eventName,

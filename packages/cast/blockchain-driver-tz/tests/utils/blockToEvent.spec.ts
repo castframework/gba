@@ -66,11 +66,7 @@ describe('blockToEvent', () => {
 
   it('should format the event', () => {
     const mapper = {
-      Test: (_, payload) => ({
-        name: payload[0],
-        hp: payload[1],
-        credit: payload[2],
-      }),
+      Test: (_, payload) => payload,
     };
     const result = formatEvent(
       'KT1JxWuoXHoUSH7qNnRi8S5CqEha7YJrxWKk',
@@ -97,11 +93,7 @@ describe('blockToEvent', () => {
 
   it('should be able to chain', () => {
     const mapper = {
-      Test: (_, paylaod) => ({
-        name: paylaod[0],
-        hp: paylaod[1],
-        credit: paylaod[2],
-      }),
+      Test: (_, paylaod) => paylaod,
     };
 
     const result = R.pipe(
@@ -132,11 +124,7 @@ describe('blockToEvent', () => {
 
   it('should be able to process a block', () => {
     const mapper = {
-      Test: (_, paylaod) => ({
-        name: paylaod[0],
-        hp: paylaod[1],
-        credit: paylaod[2],
-      }),
+      Test: (_, paylaod) => paylaod,
     };
 
     const result = tezosDriver.blockToEvents(
