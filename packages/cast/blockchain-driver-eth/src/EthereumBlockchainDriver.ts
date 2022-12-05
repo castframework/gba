@@ -943,12 +943,18 @@ export class EthereumBlockchainDriver
         logEvent('transactionHash')(`Transaction Hash has been received`);
       })
       .on('receipt', async (receipt) => {
+        logEvent('receipt')(receipt);
+      })
+      .on('confirmation', (confNumber: number) => {
+        logEvent('confirmation')(confNumber);
+      })
+      .then(async (receipt)=>{
         parseReceiptEvents(
           abstractTransaction.blockchainSpecificParams?.abi,
           abstractTransaction.to,
           receipt,
         );
-        logEvent('receipt')(receipt);
+        logEvent('receipt in promise')(receipt);
         if (
           transactionHash !== null &&
           this.currentTransactionInfos.has(transactionHash)
@@ -975,9 +981,6 @@ export class EthereumBlockchainDriver
             ?.next(TransactionStatus.CONFIRMED);
           this.transactionObservable.get(transactionHash)?.complete();
         }
-      })
-      .on('confirmation', (confNumber: number) => {
-        logEvent('confirmation')(confNumber);
       })
       // we don't need to listen to the error event, everything will be handled in the catch
       //.on('error', err => {})
