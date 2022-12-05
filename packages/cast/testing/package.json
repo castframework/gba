@@ -70,7 +70,7 @@
     "lint:fix": "eslint --fix --ignore-path .gitignore --ext ts .",
     "prepublishOnly": "npm run build",
     "sonar": "npx --no sonar-scanner",
-    "test:integration": "NETWORK_FOLDER=../../../networks/local npx --no ts-mocha --exit tests/**/*.spec.ts",
+    "test:integration": "NETWORK_FOLDER=../../../networks/local npx --no ts-mocha -- --exit tests/**/*.spec.ts",
     "stats:integration": "nyc npm run test:integration",
     "pre-commit": "lint-staged --verbose"
   },
