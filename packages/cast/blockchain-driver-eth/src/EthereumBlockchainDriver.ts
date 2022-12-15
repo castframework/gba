@@ -68,7 +68,7 @@ export class EthereumBlockchainDriver
   private static NONCE_ERRORS = [
     'nonce too low',
     'nonce too high',
-    'replacement transaction underpriced',
+    'transaction underpriced',
     "the tx doesn't have the correct nonce",
   ];
   private static CONNECTION_ERRORS = ['connection not open on send()'];
