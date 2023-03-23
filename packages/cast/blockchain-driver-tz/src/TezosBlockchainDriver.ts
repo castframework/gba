@@ -18,6 +18,7 @@ import {
 } from '@castframework/types';
 import {
   concat,
+  EMPTY,
   from,
   Observable,
   of,
@@ -36,6 +37,7 @@ import {
 } from './types';
 import { defaultConfig } from './defaultConfig';
 import {
+  catchError,
   distinctUntilChanged,
   filter,
   map,
@@ -461,6 +463,12 @@ export class TezosBlockchainDriver
     );
     return timer(0, this.config.pollingIntervalInSeconds * 1000).pipe(
       switchMap(() => from(this.getBlock())),
+      catchError((error) => {
+        this.logger.warn(
+          `Warning fail to get last block : ${errorAsString(error)}`,
+        );
+        return EMPTY;
+      }),
       distinctUntilChanged((x, y) => x.header.level === y.header.level),
     );
   }
