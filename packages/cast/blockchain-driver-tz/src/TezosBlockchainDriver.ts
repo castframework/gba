@@ -391,6 +391,31 @@ export class TezosBlockchainDriver
     );
   }
 
+  private getEventMappersOrThrow(
+    blockchainSpecificParams?: Partial<TezosSpecificParams>,
+  ): EventMappers {
+    const eventMappers = blockchainSpecificParams?.eventMappers;
+
+    if (eventMappers === undefined) {
+      this.logger.error('You must have event mappers to use listen');
+      throw new Error('You must have event mappers to use listen');
+    }
+
+    return eventMappers;
+  }
+
+  private logListeningParams(params: ListenParams<TezosSpecificParams>): void {
+    this.logger.debug(
+      `Listening to event ${params.eventName} from block ${
+        params.from ?? 'latest'
+      } for smart contract ${
+        params.smartContractAddress
+      } with Tezos Specific params ${JSON.stringify(
+        params.blockchainSpecificParams,
+      )}`,
+    );
+  }
+
   private _listen<EventType extends Event<string>>(
     params: ListenParams<TezosSpecificParams>,
   ): Observable<EventType> {
@@ -401,22 +426,10 @@ export class TezosBlockchainDriver
       blockchainSpecificParams,
     } = params;
 
-    const eventMappers = blockchainSpecificParams?.eventMappers;
+    const eventMappers = this.getEventMappersOrThrow(blockchainSpecificParams);
 
-    if (eventMappers === undefined) {
-      this.logger.error('You must have event mappers to use listen');
-      throw new Error('You must have event mappers to use listen');
-    }
+    this.logListeningParams(params);
 
-    this.logger.debug(
-      `Listening to event ${params.eventName} from block ${
-        params.from ?? 'latest'
-      } for smart contract ${
-        params.smartContractAddress
-      } with Tezos Specific params ${JSON.stringify(
-        params.blockchainSpecificParams,
-      )}`,
-    );
     return this.blocksFrom(fromBlock).pipe(
       switchMap((block) =>
         from(
@@ -454,22 +467,35 @@ export class TezosBlockchainDriver
     return concat(blocksFromLevel$, this.newBlocks$);
   }
 
-  private listenNewBlocks(): Observable<BlockResponse> {
+  private logWarnAndForget(error: Error): Observable<never> {
+    this.logger.warn(
+      `Warning fail to get last block : ${errorAsString(error)}`,
+    );
+    return EMPTY;
+  }
+
+  private compareHeaderLevel = (x: BlockResponse, y: BlockResponse): boolean =>
+    x.header.level === y.header.level;
+
+  private getBlockAsObservable = (): Observable<BlockResponse> =>
+    from(this.getBlock()).pipe(catchError(this.logWarnAndForget));
+
+  private assertPollingInterval(): void {
     if (this.config.pollingIntervalInSeconds === 0) {
       throw new Error('Polling interval should not be 0');
     }
+  }
+
+  private listenNewBlocks(): Observable<BlockResponse> {
+    this.assertPollingInterval();
+
     this.logger.trace(
       `Start polling with ${this.config.pollingIntervalInSeconds} seconds interval`,
     );
+
     return timer(0, this.config.pollingIntervalInSeconds * 1000).pipe(
-      switchMap(() => from(this.getBlock())),
-      catchError((error) => {
-        this.logger.warn(
-          `Warning fail to get last block : ${errorAsString(error)}`,
-        );
-        return EMPTY;
-      }),
-      distinctUntilChanged((x, y) => x.header.level === y.header.level),
+      switchMap(this.getBlockAsObservable),
+      distinctUntilChanged(this.compareHeaderLevel),
     );
   }
 
