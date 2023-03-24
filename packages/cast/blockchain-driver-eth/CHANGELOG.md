@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0-alpha.16 (2023-03-24)
+
+### Bug Fixes
+
+- **tz-driver:** move getBlock error management up ([#25](https://github.com/castframework/gba/issues/25)) ([3c49921](https://github.com/castframework/gba/commit/3c4992138bc80bb0f1231b0bf5cd67fde7c5d6a7))
+
 # 1.1.0-alpha.15 (2023-03-23)
 
 ### Bug Fixes
