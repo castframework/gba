@@ -467,12 +467,12 @@ export class TezosBlockchainDriver
     return concat(blocksFromLevel$, this.newBlocks$);
   }
 
-  private logWarnAndForget(error: Error): Observable<never> {
+  private logWarnAndForget = (error: Error): Observable<never> => {
     this.logger.warn(
       `Warning fail to get last block : ${errorAsString(error)}`,
     );
     return EMPTY;
-  }
+  };
 
   private compareHeaderLevel = (x: BlockResponse, y: BlockResponse): boolean =>
     x.header.level === y.header.level;
