@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0-alpha.17 (2023-03-24)
+
+### Bug Fixes
+
+- **tz-driver:** wrong member def ([2f7b52b](https://github.com/castframework/gba/commit/2f7b52b0c5c5ddf006e974a9d576f0b7eba17fa3))
+
 # 1.1.0-alpha.16 (2023-03-24)
 
 ### Bug Fixes
