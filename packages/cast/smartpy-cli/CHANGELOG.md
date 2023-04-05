@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0-alpha.18 (2023-04-05)
+
+### Features
+
+- sanitize paying agent and guarantor entry ([#26](https://github.com/castframework/gba/issues/26)) ([8b3b489](https://github.com/castframework/gba/commit/8b3b4893f390c87aa66f3546b09b8edd585f0776))
+
 # 1.1.0-alpha.17 (2023-03-24)
 
 ### Bug Fixes
