@@ -259,7 +259,7 @@ export class EthereumBlockchainDriver
       methodName,
       methodParameters = [],
     } = abstractCall;
-
+    replaceNullByDefaultValue(methodParameters, methodName);
     this.logger.trace(`call with params ${JSON.stringify(abstractCall)}`);
 
     if (methodName === undefined) {
@@ -565,8 +565,9 @@ export class EthereumBlockchainDriver
         methodParameters,
         transactionParams,
       } = abstractTransaction;
-      const parsedMethodParameters =
-        replaceNullByDefaultValue(methodParameters);
+
+      this.logger.trace(`methodParameters ${JSON.stringify(methodParameters)}`);
+      replaceNullByDefaultValue(methodParameters, methodName);
 
       this.logger.trace(
         `Send with params ${JSON.stringify(abstractTransaction)}`,
@@ -594,7 +595,7 @@ export class EthereumBlockchainDriver
       let data = '';
       let gas = blockchainSpecificParams?.gasLimit;
       // smart contract call
-      if (methodName !== undefined && parsedMethodParameters !== undefined) {
+      if (methodName !== undefined && methodParameters !== undefined) {
         const smartContractAddress = to;
 
         // Build Web3 Contract object
@@ -614,7 +615,7 @@ export class EthereumBlockchainDriver
         // Build Web3 Transaction object
 
         const web3Transaction = web3Contract.methods[methodName](
-          ...parsedMethodParameters,
+          ...methodParameters,
         ) as unknown; // Better unknown than any
 
         if (!isContractSendMethod(web3Transaction)) {

@@ -65,7 +65,7 @@
   "gitHead": "982cb985910c07be2dd7434878e50cc84adc4f38",
   "license": "SEE LICENSE IN LICENSE",
   "main": "dist/index.js",
-  "name": "@chavers/blockchain-driver-eth",
+  "name": "@castframework/blockchain-driver-eth",
   "scripts": {
     "build": "npm run clean && npm run compile",
     "build:link": "npm run build && cd dist && npm link",
