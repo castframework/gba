@@ -27,7 +27,11 @@ import Web3 from 'web3';
 import { WebsocketProviderOptions } from 'web3-core-helpers';
 import { BlockHeader } from 'web3-eth';
 import { ContractSendMethod } from 'web3-eth-contract';
-import { isContractSendMethod, waitFor } from './utils';
+import {
+  isContractSendMethod,
+  replaceNullByDefaultValue,
+  waitFor,
+} from './utils';
 import {
   EventLog,
   WebsocketProvider,
@@ -50,7 +54,6 @@ export { Logger } from 'log4js';
 
 const ONE_BILLION = 1000000000;
 
-
 interface TransactionArguments {
   from: string;
   nonce: number;
@@ -60,7 +63,7 @@ interface TransactionArguments {
   to: string;
   value: string;
   type?: string;
-};
+}
 export class EthereumBlockchainDriver
   implements
     BlockchainDriver<EthereumSpecificParams, EthereumSpecificTransactionInfo>
@@ -256,7 +259,7 @@ export class EthereumBlockchainDriver
       methodName,
       methodParameters = [],
     } = abstractCall;
-
+    replaceNullByDefaultValue(methodParameters, methodName);
     this.logger.trace(`call with params ${JSON.stringify(abstractCall)}`);
 
     if (methodName === undefined) {
@@ -563,6 +566,9 @@ export class EthereumBlockchainDriver
         transactionParams,
       } = abstractTransaction;
 
+      this.logger.trace(`methodParameters ${JSON.stringify(methodParameters)}`);
+      replaceNullByDefaultValue(methodParameters, methodName);
+
       this.logger.trace(
         `Send with params ${JSON.stringify(abstractTransaction)}`,
       );
@@ -582,7 +588,9 @@ export class EthereumBlockchainDriver
         abstractTransaction,
       );
 
-      this.logger.debug(`Transaction Arguments: ${JSON.stringify(transactionArguments)}`);
+      this.logger.debug(
+        `Transaction Arguments: ${JSON.stringify(transactionArguments)}`,
+      );
 
       let data = '';
       let gas = blockchainSpecificParams?.gasLimit;
@@ -663,7 +671,7 @@ export class EthereumBlockchainDriver
             gasPrice: transactionArguments.gasPrice,
             maxFeePerGas: transactionArguments.maxFeePerGas,
             maxPriorityFeePerGas: transactionArguments.maxPriorityFeePerGas,
-            type: transactionArguments.type
+            type: transactionArguments.type,
           },
           replacedTransactionId: abstractTransaction.replacedTransactionId,
         };
@@ -830,16 +838,26 @@ export class EthereumBlockchainDriver
     if (this.config.useEIP1559 && this.currentBlockHeader?.baseFeePerGas) {
       transactionArguments.type = EIP1559_TYPE;
       const DEFAULT_PRIORITY_FEE_IN_GWEI = 2.5;
-      transactionArguments.maxPriorityFeePerGas = (this.config.priorityFeeInGwei ?? DEFAULT_PRIORITY_FEE_IN_GWEI) * ONE_BILLION;
-      transactionArguments.maxFeePerGas = (2 * this.currentBlockHeader.baseFeePerGas) + transactionArguments.maxPriorityFeePerGas;
+      transactionArguments.maxPriorityFeePerGas =
+        (this.config.priorityFeeInGwei ?? DEFAULT_PRIORITY_FEE_IN_GWEI) *
+        ONE_BILLION;
+      transactionArguments.maxFeePerGas =
+        2 * this.currentBlockHeader.baseFeePerGas +
+        transactionArguments.maxPriorityFeePerGas;
     } else {
-      if (this.config.useEIP1559 && this.currentBlockHeader?.baseFeePerGas === undefined) {
-        this.logger.warn('EIP-1559 requested, but the network does not support baseFeePerGas. Reverting to gasPrice.');
+      if (
+        this.config.useEIP1559 &&
+        this.currentBlockHeader?.baseFeePerGas === undefined
+      ) {
+        this.logger.warn(
+          'EIP-1559 requested, but the network does not support baseFeePerGas. Reverting to gasPrice.',
+        );
       }
 
-      transactionArguments.gasPrice =  abstractTransaction.blockchainSpecificParams?.gasPrice !== undefined
-        ? abstractTransaction.blockchainSpecificParams?.gasPrice
-        : await this.computeGasPrice();
+      transactionArguments.gasPrice =
+        abstractTransaction.blockchainSpecificParams?.gasPrice !== undefined
+          ? abstractTransaction.blockchainSpecificParams?.gasPrice
+          : await this.computeGasPrice();
     }
 
     return transactionArguments;
@@ -948,7 +966,7 @@ export class EthereumBlockchainDriver
       .on('confirmation', (confNumber: number) => {
         logEvent('confirmation')(confNumber);
       })
-      .then(async (receipt)=>{
+      .then(async (receipt) => {
         parseReceiptEvents(
           abstractTransaction.blockchainSpecificParams?.abi,
           abstractTransaction.to,
@@ -968,7 +986,9 @@ export class EthereumBlockchainDriver
           transactionInfo.blockNumber = receipt.blockNumber;
 
           if (transactionInfo.blockchainSpecificTransactionInfo !== undefined) {
-            transactionInfo.blockchainSpecificTransactionInfo.baseFeePerGas = (await this.web3.eth.getBlock(receipt.blockNumber)).baseFeePerGas;
+            transactionInfo.blockchainSpecificTransactionInfo.baseFeePerGas = (
+              await this.web3.eth.getBlock(receipt.blockNumber)
+            ).baseFeePerGas;
           }
 
           transactionInfo.status = TransactionStatus.CONFIRMED;
