@@ -1,6 +1,6 @@
 {
   "name": "@castframework/smartpy-cli",
-  "version": "1.0.1",
+  "version": "1.0.2-support.0",
   "description": "",
   "main": "originator.js",
   "scripts": {
