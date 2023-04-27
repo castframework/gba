@@ -1,0 +1,94 @@
+name: Manual Test
+on:
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'     
+        required: false
+        default: false
+
+jobs:
+  tests:
+    name: Unit test (Node ${{ matrix.node }}, ${{ matrix.architecture }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["16"]
+        architecture: ["x64"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+          architecture: ${{ matrix.architecture }}
+          cache: "npm"
+
+      - name: Install
+        run: |
+          npm install -g npm lerna
+          npm ci
+          ./bin/symlink-bin
+          lerna link
+      - name: Build
+        run: |
+          lerna run build
+      - name: Lint
+        run: |
+          lerna run lint
+      - name: Test
+        run: |
+          lerna run stats
+      - name: Setup tmate session
+        if: ${{ failure() && github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+        uses: mxschmitt/action-tmate@v3
+
+  integration-tests:
+    name: Integration tests (Node ${{ matrix.node }}, ${{ matrix.architecture }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["16"]
+        architecture: ["x64"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+          architecture: ${{ matrix.architecture }}
+          cache: "npm"
+
+      - name: Install
+        run: |
+          npm install -g npm lerna
+          npm ci
+          ./bin/symlink-bin
+          lerna link
+      - name: Start blockchains
+        run: |
+          docker-compose up -d
+          docker-compose ps
+      - name: Setup blockchains
+        run: |
+          ./bin/iter-all
+      - name: Instrument code
+        run: |
+          lerna run instrument
+          lerna run build
+          git status
+          git reset --hard
+      - name: Integration tests
+        run: |
+          lerna run stats:integration
+      - name: Stop blockchains
+        run: docker-compose down
+        
+      - name: Setup tmate session
+        if: ${{ failure() && github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+        uses: mxschmitt/action-tmate@v3
