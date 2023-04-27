@@ -334,6 +334,7 @@ export class EthereumBlockchainDriver
       },
       1000, // todo: à rendre configurable
       Number.POSITIVE_INFINITY, // todo: à rendre configurable ?
+      "waitForConfirmation transaction still pending at timeout"
     );
     const transactionInfo = await this.getTransactionInfo(transactionId);
     this.logger.trace(
@@ -475,7 +476,8 @@ export class EthereumBlockchainDriver
                   return currentBlockHeader.number >= notificationBlockNumber;
                 },
                 1000,
-                30 * 60 * 1000,
+                Number.POSITIVE_INFINITY,
+                `listen : notification block ${notificationBlockNumber} not reached at timeout`
               );
               // todo : add a check that event is still valid (i.e. event block hash is still part of the blockchain)
               // e.g. this.blockchain.getBlock(contractEvent.blockHash) !== null

@@ -12,12 +12,13 @@ export async function waitFor(
   testFn: () => boolean | Promise<boolean>,
   msInterval: number,
   msTimeout: number,
+  timeoutMessage: string,
 ): Promise<void> {
   const end = Date.now() + msTimeout;
   while (!(await testFn()) && Date.now() < end) {
     await delay(msInterval);
   }
   if (!(await testFn())) {
-    throw new Error('Timeout reached');
+    throw new Error(`Timeout reached: ${timeoutMessage}`);
   }
 }
