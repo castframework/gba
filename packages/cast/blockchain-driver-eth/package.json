@@ -2,8 +2,8 @@
   "author": "Cast Framework",
   "description": "Interface with the blockchain",
   "dependencies": {
-    "@castframework/types": "^1.0.2-support.0",
-    "@castframework/utils": "^1.0.2-support.0",
+    "@castframework/types": "^1.0.2-support.1",
+    "@castframework/utils": "^1.0.2-support.1",
     "delay": "^5.0.0",
     "faker": "^5.5.3",
     "lerna": "^3.22.1",
@@ -73,5 +73,5 @@
     "*.ts": "eslint --ignore-path .gitignore --quiet"
   },
   "types": "dist/index.d.ts",
-  "version": "1.0.2-support.0"
+  "version": "1.0.2-support.1"
 }
