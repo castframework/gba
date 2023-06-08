@@ -3,7 +3,6 @@
   "description": "Interface with the blockchain",
   "dependencies": {
     "faker": "^5.5.3",
-    "lerna": "^3.22.1",
     "lodash": "4.17.15",
     "log4js": "^6.2.1",
     "rxjs": "^6.6.7",

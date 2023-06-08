@@ -5,7 +5,6 @@
     "@castframework/types": "^1.1.0-alpha.19",
     "@castframework/utils": "^1.1.0-alpha.19",
     "faker": "^5.5.3",
-    "lerna": "^3.22.1",
     "lodash": "4.17.15",
     "log4js": "^6.2.1",
     "rxjs": "^6.6.7",
