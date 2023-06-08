@@ -1,13 +1,13 @@
 {
   "name": "@castframework/smart-contract-tezos",
-  "version": "1.1.0-alpha.19",
+  "version": "1.1.0-alpha.20",
   "description": "",
   "main": "index.js",
   "private": true,
   "author": "Cast Framework",
   "license": "See license in LICENSE",
   "devDependencies": {
-    "@castframework/smartpy-cli": "^1.1.0-alpha.19",
+    "@castframework/smartpy-cli": "^1.1.0-alpha.20",
     "@types/expect": "^24.3.0",
     "@types/mocha": "^8.2.0",
     "@types/shelljs": "^0.8.8",

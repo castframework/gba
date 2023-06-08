@@ -2,7 +2,7 @@
   "author": "Cast Framework",
   "description": "Interface with the blockchain",
   "dependencies": {
-    "@castframework/types": "^1.1.0-alpha.19",
+    "@castframework/types": "^1.1.0-alpha.20",
     "faker": "^5.5.3",
     "lodash": "4.17.15",
     "log4js": "^6.2.1",
@@ -70,5 +70,5 @@
     "*.ts": "eslint --ignore-path .gitignore --quiet"
   },
   "types": "dist/index.d.ts",
-  "version": "1.1.0-alpha.19"
+  "version": "1.1.0-alpha.20"
 }
