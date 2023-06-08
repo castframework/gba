@@ -1,10 +1,15 @@
 {
-  "packages": ["packages/**"],
+  "packages": [
+    "packages/**"
+  ],
   "command": {
     "publish": {
-      "ignoreChanges": ["ignored-file", "*.md"],
+      "ignoreChanges": [
+        "ignored-file",
+        "*.md"
+      ],
       "message": "chore(packages): auto-publish [skip ci]"
     }
   },
-  "version": "1.1.0-alpha.18"
+  "version": "1.1.0-alpha.19"
 }
