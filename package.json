@@ -27,7 +27,6 @@
     "hex-to-uuid": "^1.1.1",
     "js-sha3": "^0.8.0",
     "keccak256": "^1.0.2",
-    "lerna": "^3.22.1",
     "libsodium-wrappers-sumo": "^0.7.9",
     "lodash": "4.17.15",
     "log4js": "^6.2.1",
@@ -49,6 +48,7 @@
     "wtfnode": "^0.8.1"
   },
   "devDependencies": {
+    "lerna": "^3.22.1",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
