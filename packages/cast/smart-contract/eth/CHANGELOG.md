@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0-alpha.21 (2023-06-09)
+
+
+### Bug Fixes
+
+* fix lerna and npm version on all actions ([e072d03](https://github.com/castframework/gba/commit/e072d03cb1260cc6cb5feb2c6570229317a540ff))
+
+
+
+
+
 # 1.1.0-alpha.20 (2023-06-08)
 
 **Note:** Version bump only for package @castframework/smart-contract-ethereum
