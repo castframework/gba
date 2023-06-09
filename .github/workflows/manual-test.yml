@@ -29,7 +29,7 @@ jobs:
 
       - name: Install
         run: |
-          npm install -g npm lerna
+          npm install -g npm@8.19.4 lerna@3.22.1
           npm ci
           ./bin/symlink-bin
           lerna link
@@ -66,7 +66,7 @@ jobs:
 
       - name: Install
         run: |
-          npm install -g npm lerna
+          npm install -g npm@8.19.4 lerna@3.22.1
           npm ci
           ./bin/symlink-bin
           lerna link
