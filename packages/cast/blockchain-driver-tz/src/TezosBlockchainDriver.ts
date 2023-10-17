@@ -87,6 +87,10 @@ export class TezosBlockchainDriver
     '.tx_rollup_operation_counter_mismatch',
     '.tx_rollup_unknown_address_index',
   ];
+  private static MANAGER_ERRORS = [
+    '.prefilter.manager_restriction',
+    'operation.manager_restriction',
+  ];
   private static CONNECTION_ERRORS = [];
   private static HTTP_ERRORS_CODE: STATUS_CODE[] = [
     504, 500, 507, 508, 408, 503, 429,
@@ -729,8 +733,19 @@ export class TezosBlockchainDriver
     // temporary seem pretty 'retryable'like
     return (
       error instanceof Error &&
-      (this.isNonceIssue(error) || this.isConnectionIssue(error))
+      (this.isNonceIssue(error) || this.isConnectionIssue(error) || this.isManagerIssue(error))
     );
+  }
+
+  private isManagerIssue(error: Error): boolean{
+    if (error instanceof TezosOperationError) {
+      const tezosErrorId = error.id;
+
+      return TezosBlockchainDriver.MANAGER_ERRORS.some((id) =>
+        tezosErrorId.includes(id),
+      );
+    }
+    return false;
   }
 
   private isNonceIssue(error: Error): boolean {
